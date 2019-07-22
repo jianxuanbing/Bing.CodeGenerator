@@ -9,12 +9,12 @@ namespace Bing.CodeGenerator.Entity
     public class Schema : IConvertedName
     {
         /// <summary>
-        /// 编号
+        /// 架构标识
         /// </summary>
         public int? Id { get; set; }
 
         /// <summary>
-        /// 架构名
+        /// 名称
         /// </summary>
         public string Name { get; set; }
         

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bing.CodeGenerator.Db;
+using Bing.CodeGenerator.Entity;
 using Microsoft.Extensions.Logging;
 using SmartCode;
 using SmartCode.Configuration;
@@ -15,6 +17,21 @@ namespace Bing.CodeGenerator
     public class DbTableWithSchemaSource: DbSource, ITableSource
     {
         /// <summary>
+        /// 名称
+        /// </summary>
+        public override string Name => "DbTableSchema";
+
+        /// <summary>
+        /// 数据表集合
+        /// </summary>
+        public IList<Table> Tables { get; private set; }
+
+        /// <summary>
+        /// 架构集合
+        /// </summary>
+        public IList<Schema> Schemas { get; private set; }
+
+        /// <summary>
         /// 初始化一个<see cref="DbTableWithSchemaSource"/>类型的实例
         /// </summary>
         /// <param name="project">项目</param>
@@ -25,10 +42,9 @@ namespace Bing.CodeGenerator
         {
         }
 
-
-        public override string Name => "DbTableSchema";
-        public IList<Table> Tables { get; private set; }
-
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
         public override async Task InitData()
         {
             var dbTableRepository = new DbTableRepository(Project.DataSource, LoggerFactory);
@@ -54,6 +70,9 @@ namespace Bing.CodeGenerator
                     }
                 }
             }
+
+            var schemaRepository = new SchemaRepository(Project.DataSource, LoggerFactory);
+            Schemas = await schemaRepository.QuerySchema(Tables);
         }
     }
 }
