@@ -1,0 +1,16 @@
+﻿@using SmartCode
+@using SmartCode.Generator.Extensions
+@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var table = Model.GetCurrentTable();
+}
+
+namespace @($"{project.Module}.Domain.Models")
+{
+    @table.GetCSharpSummary()
+    public partial class @table.Name
+    {
+    }
+}
