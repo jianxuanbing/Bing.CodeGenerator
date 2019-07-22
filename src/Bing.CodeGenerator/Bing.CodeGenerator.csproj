@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SmartCode.App" Version="2.2.65" />
+    <PackageReference Include="SmartCode.Generator" Version="2.2.65" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BuildTasks\" />
+  </ItemGroup>
+
+</Project>
