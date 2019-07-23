@@ -47,9 +47,9 @@ namespace Bing.CodeGenerator
         /// </summary>
         public override async Task InitData()
         {
-            var dbTableRepository = new DbTableRepository(Project.DataSource, LoggerFactory);
-            DbRepository = dbTableRepository;
-            Tables = await dbTableRepository.QueryTable();
+            var schemaTableRepository = new SchemaTableRepository(Project.DataSource, LoggerFactory);
+            DbRepository = schemaTableRepository;
+            Tables = await schemaTableRepository.QueryTable();
             var dbTypeConvert = PluginManager.Resolve<IDbTypeConverter>();
             foreach (var table in Tables)
             {
@@ -70,9 +70,7 @@ namespace Bing.CodeGenerator
                     }
                 }
             }
-
-            var schemaRepository = new SchemaRepository(Project.DataSource, LoggerFactory);
-            Schemas = await schemaRepository.QuerySchema(Tables);
+            Schemas = await schemaTableRepository.QuerySchema(Tables);
         }
     }
 }

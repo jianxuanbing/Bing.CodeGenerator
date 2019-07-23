@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Bing.CodeGenerator.Core
 {
@@ -10,5 +8,13 @@ namespace Bing.CodeGenerator.Core
     /// </summary>
     public class RelationshipCollection : ObservableCollection<Relationship>
     {
+        /// <summary>
+        /// 是否已处理
+        /// </summary>
+        public bool IsProcessed { get; set; }
+
+        //public Relationship ByName(string name)
+        //{
+        //}
     }
 }

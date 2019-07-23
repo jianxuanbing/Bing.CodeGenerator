@@ -1,0 +1,48 @@
+﻿Module: Tms
+Author: jian玄冰
+DataSource:
+  Name: DbTableSchema
+  Parameters:
+    DbName: Tms
+    DbProvider: SqlServer
+    ConnectionString: Data Source=DESKTOP-I6SANBT\JIAN;Initial Catalog=Tms;User Id=sa;Password=jian123456;Integrated Security=True
+Language: CSharp
+TemplateEngine:
+  Name: Razor
+  Root: Bing
+  Path: G:\Git\SmartCode\Bing.GenerateDemo\bin\Debug\netcoreapp2.2\RazorTemplates
+Output:
+  Type: File
+  Path: 'D:\demo\generate'
+
+NamingConverter:
+  Table:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+  View:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+  Column:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+
+Build:
+  ClearDir:
+    Type: Clear
+    Parameters:
+      Dirs: '.'
+  Solution:
+    Type: Project
+    Module: Solution
+    TemplateEngine:
+      Path: Sln.cshtml
+    Output:
+        Path: '.'
+        Name: '{{Project.Module}}'
+        Extension: '.sln'

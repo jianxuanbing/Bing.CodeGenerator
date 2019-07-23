@@ -1,0 +1,41 @@
+﻿@using SmartCode
+@using Bing.CodeGenerator.Extensions
+@using Bing.CodeGenerator.Core
+@model BuildContext
+@{
+    var project = Model.Project;
+    var schemas = Model.GetCurrentAllSchema();
+    var sln = new SlnInfo();
+    sln.InitData(project.Module, schemas);
+}
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+@sln.GetProjectString()
+Global
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Debug|Any CPU = Debug|Any CPU
+        Release|Any CPU = Release|Any CPU
+    EndGlobalSection
+    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+    @foreach (var item in sln.GetProjects())
+    {
+        <text>@($"\t\t{{{item.Id}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU")</text>
+        <text>@($"\t\t{{{item.Id}}}.Debug|Any CPU.Build.0 = Debug|Any CPU")</text>
+        <text>@($"\t\t{{{item.Id}}}.Release|Any CPU.ActiveCfg = Release|Any CPU")</text>
+        <text>@($"\t\t{{{item.Id}}}.Release|Any CPU.Build.0 = Release|Any CPU")</text>
+        @Html.NewLine()
+    }
+    EndGlobalSection
+    GlobalSection(SolutionProperties) = preSolution
+        HideSolutionNode = FALSE
+    EndGlobalSection
+    GlobalSection(NestedProjects) = preSolution
+    @foreach (var item in sln.GetSlnRelation())
+    {
+        <text>@($"\t\t{{{item.Key}}} = {{{item.Value}}}")</text>
+        @Html.NewLine()
+    }
+    EndGlobalSection
+EndGlobal

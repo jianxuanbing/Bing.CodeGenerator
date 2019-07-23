@@ -13,12 +13,12 @@ namespace Bing.CodeGenerator.Db
     /// <summary>
     /// 架构仓储
     /// </summary>
-    public class SchemaRepository : DbRepository, ISchemaRepository
+    public class SchemaTableRepository : DbRepository, ISchemaRepository
     {
         /// <summary>
         /// 日志
         /// </summary>
-        private readonly ILogger<SchemaRepository> _logger;
+        private readonly ILogger<SchemaTableRepository> _logger;
 
         /// <summary>
         /// 作用域
@@ -26,14 +26,14 @@ namespace Bing.CodeGenerator.Db
         public string Scope { get; set; }
 
         /// <summary>
-        /// 初始化一个<see cref="SchemaRepository"/>类型的实例
+        /// 初始化一个<see cref="SchemaTableRepository"/>类型的实例
         /// </summary>
         /// <param name="dataSource">数据源</param>
         /// <param name="loggerFactory">日志工厂</param>
-        public SchemaRepository(DataSource dataSource, ILoggerFactory loggerFactory) : base(dataSource, loggerFactory)
+        public SchemaTableRepository(DataSource dataSource, ILoggerFactory loggerFactory) : base(dataSource, loggerFactory)
         {
-            Scope = $"Database={DbProviderName}";
-            _logger = loggerFactory.CreateLogger<SchemaRepository>();
+            Scope = $"Database-{DbProviderName}";
+            _logger = loggerFactory.CreateLogger<SchemaTableRepository>();
         }
 
         /// <summary>
@@ -85,6 +85,40 @@ namespace Bing.CodeGenerator.Db
             });
             var tableIds = schemaTableRelations.Select(x => x.Id);
             return sourceTables.Where(x => tableIds.Contains(x.Id)).ToList();
+        }
+
+        /// <summary>
+        /// 查询表
+        /// </summary>
+        public async Task<IList<Table>> QueryTable()
+        {
+            _logger.LogInformation($"----Db:{DbName} Provider:{DbProviderName}, QueryTable Start! ----");
+            IList<Table> tables;
+            try
+            {
+                SqlMapper.SessionStore.Open();
+                tables = await SqlMapper.QueryAsync<Table>(new RequestContext
+                {
+                    Scope = Scope,
+                    SqlId = "QueryTable",
+                    Request = new { DbName, DbSchema }
+                });
+                foreach (var table in tables)
+                {
+                    table.Columns = await SqlMapper.QueryAsync<Column>(new RequestContext
+                    {
+                        Scope = Scope,
+                        SqlId = "QueryColumn",
+                        Request = new { DbName, DbSchema, TableId = table.Id, TableName = table.Name }
+                    });
+                }
+            }
+            finally
+            {
+                SqlMapper.SessionStore.Dispose();
+            }
+            _logger.LogInformation($"----Db:{DbName} Provider:{DbProviderName},Tables:{tables.Count()} QueryTable End! ----");
+            return tables;
         }
     }
 }

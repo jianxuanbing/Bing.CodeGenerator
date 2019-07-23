@@ -8,13 +8,13 @@
       From Sys.Schemas Sch
       Where Sch.principal_id=1
     </Statement>
-    <statement Id="QuerySchemaTable">
+    <Statement Id="QuerySchemaTable">
       Select
       Tab.object_id as Id,
-      Tab.name as Name,
+      Tab.name as Name
       From Sys.Tables Tab
       Where Tab.schema_id=@SchemaId
-    </statement>
+    </Statement>
     <Statement Id="QueryTable">
       Select
       Obj.object_id As Id,

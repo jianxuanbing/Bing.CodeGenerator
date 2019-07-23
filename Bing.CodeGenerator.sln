@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bing.CodeGenerator", "src\Bing.CodeGenerator\Bing.CodeGenerator.csproj", "{AADCA6A4-F7D0-4679-93F0-07AB94A0EAF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bing.CodeGenerator", "src\Bing.CodeGenerator\Bing.CodeGenerator.csproj", "{AADCA6A4-F7D0-4679-93F0-07AB94A0EAF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bing.CodeGenerator.Console", "src\Bing.CodeGenerator.Console\Bing.CodeGenerator.Console.csproj", "{D29D9726-64F8-4308-8364-AC685C703640}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{AADCA6A4-F7D0-4679-93F0-07AB94A0EAF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AADCA6A4-F7D0-4679-93F0-07AB94A0EAF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AADCA6A4-F7D0-4679-93F0-07AB94A0EAF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29D9726-64F8-4308-8364-AC685C703640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29D9726-64F8-4308-8364-AC685C703640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29D9726-64F8-4308-8364-AC685C703640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29D9726-64F8-4308-8364-AC685C703640}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
