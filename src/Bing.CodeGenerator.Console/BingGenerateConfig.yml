@@ -37,18 +37,17 @@ Build:
     Type: Clear
     Parameters:
       Dirs: '.'
-  Solution:
-    Type: Project
-    Module: Solution
-    TemplateEngine:
-      Path: Sln.cshtml
-    Output:
-        Path: '.'
-        Name: '{{Project.Module}}'
-        Extension: '.sln'
   Scaffolding:
     Type: MultiTemplate
     Output:
       Path: '.'
     Parameters:
-      Templates: [{Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}]
+      Templates: [{Key: 'Sln.cshtml', Output: { Name: '{{Project.Module}}', Extension: '.sln'}}, 
+      {Key: 'Sln-Directory.Build.cshtml', Output: { Name: 'Directory.Build', Extension: '.props'}}, 
+      {Key: 'Sln-Version.cshtml', Output: { Path: 'build', Name: 'version', Extension: '.props'}},
+      {Key: 'Sln-Dockerfile.cshtml', Output: { Name: 'Dockerfile', Extension: ''}}, 
+      {Key: 'Sln-DockerIgnore.cshtml', Output: { Name: '.dockerignore', Extension: ''}}, 
+      {Key: 'Sln-GitIgnore.cshtml', Output: { Name: '.gitignore', Extension: ''}}, 
+      {Key: 'Proj-Infrastructure.cshtml', Output: { Path: 'src/{{Project.Module}}.Infrastructure', Name: '{{Project.Module}}.Infrastructure', Extension: '.csproj'}}, 
+      {Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}, 
+      {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}}, ]

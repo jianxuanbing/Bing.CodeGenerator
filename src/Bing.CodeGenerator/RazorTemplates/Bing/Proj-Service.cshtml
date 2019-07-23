@@ -1,0 +1,26 @@
+﻿@using SmartCode
+@model BuildContext
+@{ 
+    var project = Model.Project;
+}
+@functions{
+    /// <summary>
+    /// 获取数据名称
+    /// </summary>
+    /// <returns></returns>
+    public string GetDataName()
+    {
+        return $"{Model.Project.Module}.Data";
+    }
+}
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>@GetDataName()</AssemblyName>
+        <RootNamespace>@GetDataName()</RootNamespace>
+        <LangVersion>7.3</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\@GetDataName()\@(GetDataName()).csproj" />
+    </ItemGroup>
+</Project>
