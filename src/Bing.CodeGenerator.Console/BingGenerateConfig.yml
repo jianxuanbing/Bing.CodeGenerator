@@ -46,3 +46,9 @@ Build:
         Path: '.'
         Name: '{{Project.Module}}'
         Extension: '.sln'
+  Scaffolding:
+    Type: MultiTemplate
+    Output:
+      Path: '.'
+    Parameters:
+      Templates: [{Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}]

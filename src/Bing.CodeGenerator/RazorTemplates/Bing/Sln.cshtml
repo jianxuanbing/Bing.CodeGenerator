@@ -19,23 +19,25 @@ Global
         Release|Any CPU = Release|Any CPU
     EndGlobalSection
     GlobalSection(ProjectConfigurationPlatforms) = postSolution
-    @foreach (var item in sln.GetProjects())
-    {
-        <text>@($"\t\t{{{item.Id}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU")</text>
-        <text>@($"\t\t{{{item.Id}}}.Debug|Any CPU.Build.0 = Debug|Any CPU")</text>
-        <text>@($"\t\t{{{item.Id}}}.Release|Any CPU.ActiveCfg = Release|Any CPU")</text>
-        <text>@($"\t\t{{{item.Id}}}.Release|Any CPU.Build.0 = Release|Any CPU")</text>
-        @Html.NewLine()
-    }
+@foreach (var item in sln.GetProjects())
+{
+<text>
+        {@item.Id}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {@item.Id}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {@item.Id}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {@item.Id}.Release|Any CPU.Build.0 = Release|Any CPU
+</text>
+}
     EndGlobalSection
     GlobalSection(SolutionProperties) = preSolution
         HideSolutionNode = FALSE
     EndGlobalSection
     GlobalSection(NestedProjects) = preSolution
-    @foreach (var item in sln.GetSlnRelation())
-    {
-        <text>@($"\t\t{{{item.Key}}} = {{{item.Value}}}")</text>
-        @Html.NewLine()
-    }
+@foreach (var item in sln.GetSlnRelation())
+{
+<text>
+        {@item.Key} = {@item.Value}
+</text>
+}
     EndGlobalSection
 EndGlobal

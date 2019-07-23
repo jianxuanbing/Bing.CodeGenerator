@@ -1,0 +1,60 @@
+﻿@using SmartCode
+@using Bing.CodeGenerator.Extensions
+@model BuildContext
+@{
+    var project = Model.Project;
+    var schemas = Model.GetCurrentAllSchema();
+}
+@functions{
+    /// <summary>
+    /// 获取领域名称
+    /// </summary>
+    public string GetDomainName()
+    {
+        return $"{Model.Project.Module}.Domain";
+    }
+
+    /// <summary>
+    /// 获取领域名称
+    /// </summary>
+    public string GetDomainName(string schema)
+    {
+        return $"{Model.Project.Module}.{schema}.Domain";
+    }
+
+    /// <summary>
+    /// 获取模块名称
+    /// </summary>
+    public string GetModuleName()
+    {
+        return $"{Model.Project.Module}.Data";
+    }
+}
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>@GetModuleName()</AssemblyName>
+        <RootNamespace>@GetModuleName()</RootNamespace>
+        <LangVersion>7.3</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+    @if (!schemas.Any())
+    {
+        <ProjectReference Include="..\@GetDomainName()\@(GetDomainName()).csproj" />
+    }
+    else
+    {
+        @foreach(var schema in schemas)
+        {
+            if (schema.Name.ToLower() == "dbo")
+            {
+        <ProjectReference Include="..\@GetDomainName()\@(GetDomainName()).csproj" />
+            }
+            else
+            {
+        <ProjectReference Include="..\@GetDomainName(schema.Name)\@(GetDomainName(schema.Name)).csproj" />
+            }
+        }
+    }
+    </ItemGroup>
+</Project>
