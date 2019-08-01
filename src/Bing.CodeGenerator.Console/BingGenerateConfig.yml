@@ -8,7 +8,7 @@ DataSource:
     ConnectionString: Data Source=DESKTOP-I6SANBT\JIAN;Initial Catalog=Tms;User Id=sa;Password=jian123456;Integrated Security=True
 Language: CSharp
 TemplateEngine:
-  Name: Razor
+  Name: RazorTest
   Root: Bing
   Path: G:\Git\SmartCode\Bing.GenerateDemo\bin\Debug\netcoreapp2.2\RazorTemplates
 Output:
@@ -31,12 +31,14 @@ NamingConverter:
       Type: Default
     Converter:
       Type: Default
-
+# 构建任务
 Build:
+  # 清空目录
   ClearDir:
     Type: Clear
     Parameters:
       Dirs: '.'
+  # 脚手架
   Scaffolding:
     Type: MultiTemplate
     Output:
@@ -51,3 +53,13 @@ Build:
       {Key: 'Proj-Infrastructure.cshtml', Output: { Path: 'src/{{Project.Module}}.Infrastructure', Name: '{{Project.Module}}.Infrastructure', Extension: '.csproj'}}, 
       {Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}, 
       {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}}, ]
+  # 领域脚手架
+  DomainProj:
+    Type: Schema
+    Module: Domain
+    TemplateEngine:
+      Path: Proj-Domain.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
+      Name: '{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
+      Extension: '.csproj'
