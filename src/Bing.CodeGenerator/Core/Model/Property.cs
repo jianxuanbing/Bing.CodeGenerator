@@ -129,5 +129,15 @@ namespace Bing.CodeGenerator.Core
         /// 是否指定行版本
         /// </summary>
         public bool IsRowVersionSpecified => IsRowVersion.HasValue;
+
+        /// <summary>
+        /// 是否自增列
+        /// </summary>
+        public bool? IsIdentity { get; set; }
+
+        /// <summary>
+        /// 是否指定自增列
+        /// </summary>
+        public bool IsIdentitySpecified => IsIdentity.HasValue;
     }
 }
