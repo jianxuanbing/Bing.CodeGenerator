@@ -5,7 +5,7 @@ namespace Bing.CodeGenerator.Core
     /// <summary>
     /// 属性集合
     /// </summary>
-    public class PropertyCollection:ObservableCollection<Property>
+    public class PropertyCollection : ObservableCollection<Property>
     {
     }
 }

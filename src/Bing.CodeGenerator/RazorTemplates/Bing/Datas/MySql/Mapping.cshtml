@@ -1,0 +1,33 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var table = Model.GetCurrentTable();
+    var schema = Model.GetCurrentSchema();
+}
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using @(Model.GetDomainName()).Models;
+
+namespace @(project.Module).Data.Mappings.@(schema.Name).MySql
+{
+    /// <summary>
+    /// @table.Description 映射配置
+    /// </summary>
+    public class @(table.ConvertedName)Map : Bing.Datas.EntityFramework.MySql.AggregateRootMap<@table.ConvertedName>
+    {
+        /// <summary>
+        /// 映射表
+        /// </summary>
+        protected override void MapTable( EntityTypeBuilder<@table.ConvertedName> builder ) 
+        {
+            builder.ToTable( "@(schema.Name).@(table.ConvertedName)" );
+        }
+                
+        /// <summary>
+        /// 映射属性
+        /// </summary>
+        protected override void MapProperties( EntityTypeBuilder<@table.ConvertedName> builder ) 
+        {
+        }
+    }
+}
