@@ -8,14 +8,14 @@ using SmartCode.TemplateEngine;
 namespace Bing.CodeGenerator.BuildTasks
 {
     /// <summary>
-    /// 架构构建任务
+    /// 架构表构建任务
     /// </summary>
-    public class SchemaBuildTask : AbstractDbBuildTask
+    public class SchemaTableBuildTask : AbstractDbBuildTask
     {
         /// <summary>
         /// 日志
         /// </summary>
-        private readonly ILogger<SchemaBuildTask> _logger;
+        private readonly ILogger<SchemaTableBuildTask> _logger;
 
         /// <summary>
         /// 插件管理器
@@ -23,11 +23,11 @@ namespace Bing.CodeGenerator.BuildTasks
         private readonly IPluginManager _pluginManager;
 
         /// <summary>
-        /// 初始化一个<see cref="SchemaBuildTask"/>类型的实例
+        /// 初始化一个<see cref="SchemaTableBuildTask"/>类型的实例
         /// </summary>
         /// <param name="pluginManager">插件管理器</param>
         /// <param name="logger">日志</param>
-        public SchemaBuildTask(IPluginManager pluginManager, ILogger<SchemaBuildTask> logger) : base("Schema", logger)
+        public SchemaTableBuildTask(IPluginManager pluginManager, ILogger<SchemaTableBuildTask> logger) : base("SchemaTable", logger)
         {
             _pluginManager = pluginManager;
             _logger = logger;
@@ -44,8 +44,15 @@ namespace Bing.CodeGenerator.BuildTasks
             {
                 _logger.LogInformation($"BuildSchema:{schema.Name} Start!");
                 context.SetCurrentSchema(schema);
-                context.Result = await _pluginManager.Resolve<ITemplateEngine>(context.Build.TemplateEngine.Name).Render(context);
-                await _pluginManager.Resolve<IOutput>(context.Build.Output.Type).Output(context);
+                foreach (var table in schema.Tables)
+                {
+                    _logger.LogInformation($"BuildTable:{table.Name} Start!");
+                    context.SetCurrentTable(table);
+                    _pluginManager.Resolve<INamingConverter>().Convert(context);
+                    context.Result = await _pluginManager.Resolve<ITemplateEngine>(context.Build.TemplateEngine.Name).Render(context);
+                    await _pluginManager.Resolve<IOutput>(context.Build.Output.Type).Output(context);
+                    _logger.LogInformation($"BuildTable:{table.Name} End!");
+                }
                 _logger.LogInformation($"BuildSchema:{schema.Name} End!");
             }
         }

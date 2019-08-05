@@ -1,0 +1,15 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+}
+using Bing.Datas.UnitOfWorks;
+
+namespace @($"{project.Module}.Data")
+{
+    /// <summary>
+    /// 工作单元
+    /// </summary>
+    public interface @(project.Module)UnitOfWork : IUnitOfWork
+    {
+    }
+}

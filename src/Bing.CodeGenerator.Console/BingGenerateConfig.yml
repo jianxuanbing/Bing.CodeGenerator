@@ -52,7 +52,8 @@ Build:
       {Key: 'Sln-GitIgnore.cshtml', Output: { Name: '.gitignore', Extension: ''}}, 
       {Key: 'Proj-Infrastructure.cshtml', Output: { Path: 'src/{{Project.Module}}.Infrastructure', Name: '{{Project.Module}}.Infrastructure', Extension: '.csproj'}}, 
       {Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}, 
-      {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}}, ]
+      {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}},
+      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: 'I{{Project.Module}}UnitOfWork', Extension: '.cs'}}, ]
   # 领域脚手架
   DomainProj:
     Type: Schema
@@ -63,3 +64,13 @@ Build:
       Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
       Name: '{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
       Extension: '.csproj'
+  # 仓储实现
+  RepositoryImpl:
+    Type: SchemaTable
+    Module: Repositories
+    TemplateEngine:
+        Path: Datas/Repository.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Repository'
+      Extension: '.cs'
