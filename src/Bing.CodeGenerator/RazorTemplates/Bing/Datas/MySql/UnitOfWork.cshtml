@@ -1,0 +1,24 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+}
+using Microsoft.EntityFrameworkCore;
+using Bing.Datas.UnitOfWorks;
+
+namespace @(project.Module).Data.UnitOfWorks.MySql
+{
+    /// <summary>
+    /// 工作单元
+    /// </summary>
+    public class @Model.GetUnitOfWorkName() : Bing.Datas.EntityFramework.MySql.UnitOfWork, I@(Model.GetUnitOfWorkName())
+    {
+        /// <summary>
+        /// 初始化一个<see cref="@Model.GetUnitOfWorkName()"/>类型的实例
+        /// </summary>
+        /// <param name="options">配置项</param>
+        /// <param name="unitOfWorkManager">工作单元服务</param>
+        public @(Model.GetUnitOfWorkName())( DbContextOptions options, IUnitOfWorkManager unitOfWorkManager ) : base( options, unitOfWorkManager ) 
+        {
+        }
+    }
+}

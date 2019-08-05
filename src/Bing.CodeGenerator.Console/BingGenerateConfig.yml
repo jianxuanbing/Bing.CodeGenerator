@@ -53,7 +53,10 @@ Build:
       {Key: 'Proj-Infrastructure.cshtml', Output: { Path: 'src/{{Project.Module}}.Infrastructure', Name: '{{Project.Module}}.Infrastructure', Extension: '.csproj'}}, 
       {Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}, 
       {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}},
-      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: 'I{{Project.Module}}UnitOfWork', Extension: '.cs'}}, ]
+      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/MySql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/MySql', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/PgSql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/PgSql', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/SqlServer/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/SqlServer', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}}, ]
   # 领域脚手架
   DomainProj:
     Type: Schema

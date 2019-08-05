@@ -21,7 +21,16 @@
     <None Update="RazorTemplates\Bing\Datas\IUnitOfWork.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="RazorTemplates\Bing\Datas\MySql\UnitOfWork.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Datas\PgSql\UnitOfWork.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="RazorTemplates\Bing\Datas\Repository.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Datas\SqlServer\UnitOfWork.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RazorTemplates\Bing\Proj-Data.cshtml">
@@ -57,12 +66,6 @@
     <None Update="RazorTemplates\Bing\_ViewImports.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="RazorTemplates\Bing\Datas\MySql\" />
-    <Folder Include="RazorTemplates\Bing\Datas\PgSql\" />
-    <Folder Include="RazorTemplates\Bing\Datas\SqlServer\" />
   </ItemGroup>
 
 </Project>
