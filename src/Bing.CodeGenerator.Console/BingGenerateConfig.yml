@@ -1,4 +1,4 @@
-﻿Module: Tms
+﻿Module: Utopa.Tms
 Author: jian玄冰
 DataSource:
   Name: DbTableSchema
@@ -14,6 +14,8 @@ TemplateEngine:
 Output:
   Type: File
   Path: 'D:\demo\generate'
+Parameters:
+  UnitOfWork: Tms
 
 NamingConverter:
   Table:
@@ -53,10 +55,12 @@ Build:
       {Key: 'Proj-Infrastructure.cshtml', Output: { Path: 'src/{{Project.Module}}.Infrastructure', Name: '{{Project.Module}}.Infrastructure', Extension: '.csproj'}}, 
       {Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}, 
       {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}},
-      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}},
-      {Key: 'Datas/MySql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/MySql', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}},
-      {Key: 'Datas/PgSql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/PgSql', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}},
-      {Key: 'Datas/SqlServer/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/SqlServer', Name: '{{Project.Module}}UnitOfWork', Extension: '.cs'}}, ]
+      {Key: 'Proj-Api.cshtml', Output: { Path: 'src/{{Project.Module}}', Name: '{{Project.Module}}', Extension: '.csproj'}},
+      {Key: 'Log-NLog.cshtml', Output: { Path: 'src/{{Project.Module}}', Name: 'nlog', Extension: '.config'}},
+      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/MySql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/MySql', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/PgSql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/PgSql', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/SqlServer/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/SqlServer', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}}, ]
   # 领域脚手架
   DomainProj:
     Type: Schema

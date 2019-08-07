@@ -33,6 +33,12 @@
     <None Update="RazorTemplates\Bing\Datas\SqlServer\UnitOfWork.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="RazorTemplates\Bing\Log-NLog.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Proj-Api.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="RazorTemplates\Bing\Proj-Data.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

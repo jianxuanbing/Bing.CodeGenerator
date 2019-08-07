@@ -18,6 +18,6 @@ namespace @(project.Module).Data.Repositories.@(Model.GetCurrentSchema().Name)
         /// 初始化一个<see cref="@(table.ConvertedName)Repository"/>类型的实例
         /// </summary>
         /// <param name="unitOfWork">工作单元</param>
-        public @(table.ConvertedName)Repository( I@(Model.GetUnitOfWorkName()) unitOfWork ) : base( unitOfWork ) { }
+        public @(table.ConvertedName)Repository( I@(project.GetUnitOfWork()) unitOfWork ) : base( unitOfWork ) { }
     }
 }

@@ -53,12 +53,5 @@ namespace Bing.CodeGenerator.Extensions
         /// </summary>
         /// <param name="context">构建上下文</param>
         public static string GetDomainName(this BuildContext context) => $"{context.Project.Module}.{context.GetCurrentSchema().Name}.Domain";
-
-        /// <summary>
-        /// 获取工作单元名称
-        /// </summary>
-        /// <param name="context">构建上下文</param>
-        public static string GetUnitOfWorkName(this BuildContext context) => $"{context.Project.Module}UnitOfWork";
-
     }
 }

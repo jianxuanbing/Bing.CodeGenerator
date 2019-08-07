@@ -3,21 +3,19 @@
     var project = Model.Project;
 }
 using Microsoft.EntityFrameworkCore;
-using Bing.Datas.UnitOfWorks;
 
 namespace @(project.Module).Data.UnitOfWorks.PgSql
 {
     /// <summary>
     /// 工作单元
     /// </summary>
-    public class @Model.GetUnitOfWorkName() : Bing.Datas.EntityFramework.MySql.UnitOfWork, I@(Model.GetUnitOfWorkName())
+    public class @project.GetUnitOfWork() : Bing.Datas.EntityFramework.PgSql.UnitOfWork, I@(project.GetUnitOfWork())
     {
         /// <summary>
-        /// 初始化一个<see cref="@Model.GetUnitOfWorkName()"/>类型的实例
+        /// 初始化一个<see cref="@project.GetUnitOfWork()"/>类型的实例
         /// </summary>
         /// <param name="options">配置项</param>
-        /// <param name="unitOfWorkManager">工作单元服务</param>
-        public @(Model.GetUnitOfWorkName())( DbContextOptions options, IUnitOfWorkManager unitOfWorkManager ) : base( options, unitOfWorkManager ) 
+        public @(project.GetUnitOfWork())( DbContextOptions<@project.GetUnitOfWork()> options ) : base( options ) 
         {
         }
     }

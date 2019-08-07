@@ -42,6 +42,8 @@ namespace Bing.CodeGenerator.BuildTasks
             var schemas = context.GetCurrentAllSchema();
             foreach (var schema in schemas)
             {
+                if (schema.Name == "dbo")
+                    continue;
                 _logger.LogInformation($"BuildSchema:{schema.Name} Start!");
                 context.SetCurrentSchema(schema);
                 context.Result = await _pluginManager.Resolve<ITemplateEngine>(context.Build.TemplateEngine.Name).Render(context);
