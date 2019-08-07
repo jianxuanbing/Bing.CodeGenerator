@@ -6,6 +6,11 @@
     internal static class Const
     {
         /// <summary>
+        /// 标识
+        /// </summary>
+        public const string Id = "Id";
+
+        /// <summary>
         /// 租户标识
         /// </summary>
         public const string TenantId = "TenantId";
