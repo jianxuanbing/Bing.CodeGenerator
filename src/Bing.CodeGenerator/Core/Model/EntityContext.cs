@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using Bing.CodeGenerator.Entity;
+using SmartCode.Generator.Entity;
 
 namespace Bing.CodeGenerator.Core
 {
@@ -90,5 +92,12 @@ namespace Bing.CodeGenerator.Core
                 }
             }
         }
+
+        /// <summary>
+        /// 查找实体
+        /// </summary>
+        /// <param name="schema">架构</param>
+        /// <param name="table">表</param>
+        public Entity FindEntity(Schema schema,Table table) => this.Entities.ByTable($"{schema.Name}.{table.Name}");
     }
 }

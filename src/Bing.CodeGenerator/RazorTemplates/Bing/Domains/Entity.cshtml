@@ -9,7 +9,9 @@
 
 namespace @($"{project.Module}.Domain.Models")
 {
-    @table.GetCSharpSummary()
+    /// <summary>
+    /// @table.GetDescription()
+    /// </summary>
     public partial class @table.Name
     {
     }

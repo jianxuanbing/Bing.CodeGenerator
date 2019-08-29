@@ -99,5 +99,19 @@ namespace Bing.CodeGenerator.Extensions
                 return t;
             return type;
         }
+
+        /// <summary>
+        /// 获取唯一名称
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="exists">是否存在名称</param>
+        public static string MakeUnique(this string name, Func<string, bool> exists)
+        {
+            string uniqueName = name;
+            var count = 1;
+            while (exists(uniqueName))
+                uniqueName = string.Concat(name, count++);
+            return uniqueName;
+        }
     }
 }

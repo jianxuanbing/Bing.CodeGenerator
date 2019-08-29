@@ -1,9 +1,9 @@
-﻿Module: Utopa.Tms
+﻿Module: Utopa.Erp
 Author: jian玄冰
 DataSource:
   Name: DbTableSchema
   Parameters:
-    DbName: Tms
+    DbName: Erp
     DbProvider: SqlServer
     ConnectionString: Data Source=DESKTOP-I6SANBT\JIAN;Initial Catalog=Tms;User Id=sa;Password=jian123456;Integrated Security=True
 Language: CSharp
@@ -15,7 +15,7 @@ Output:
   Type: File
   Path: 'D:\demo\generate'
 Parameters:
-  UnitOfWork: Tms
+  UnitOfWork: Erp
 
 NamingConverter:
   Table:
@@ -71,13 +71,32 @@ Build:
       Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
       Name: '{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
       Extension: '.csproj'
-  # 仓储实现
+  # 仓储实现类生成
   RepositoryImpl:
     Type: SchemaTable
     Module: Repositories
     TemplateEngine:
-        Path: Datas/Repository.cshtml
+      Path: Datas/Repository.cshtml
     Output:
       Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Repository'
+      Extension: '.cs'
+  # 实体生成
+  Entity:
+    Type: SchemaTable
+    Module: Models
+    TemplateEngine:
+      Path: Domains/Entity.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}'
+      Extension: '.cs'
+  EntityBase:
+    Type: SchemaTable
+    Module: Models
+    TemplateEngine:
+      Path: Domains/Entity.Base.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}.Base'
       Extension: '.cs'

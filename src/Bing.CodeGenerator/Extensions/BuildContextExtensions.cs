@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bing.CodeGenerator.Core;
 using Bing.CodeGenerator.Entity;
 using SmartCode;
 
@@ -18,6 +19,11 @@ namespace Bing.CodeGenerator.Extensions
         /// 当前架构
         /// </summary>
         public const string CurrentSchema = "CurrentSchema";
+
+        /// <summary>
+        /// 实体上下文
+        /// </summary>
+        public const string EntityContext = "EntityContext";
 
         /// <summary>
         /// 获取当前所有架构
@@ -53,5 +59,21 @@ namespace Bing.CodeGenerator.Extensions
         /// </summary>
         /// <param name="context">构建上下文</param>
         public static string GetDomainName(this BuildContext context) => $"{context.Project.Module}.{context.GetCurrentSchema().Name}.Domain";
+
+        /// <summary>
+        /// 获取实体上下文
+        /// </summary>
+        /// <param name="context">构建上下文</param>
+        public static EntityContext GetEntityContext(this BuildContext context)
+        {
+            if (!context.Items.ContainsKey(EntityContext))
+            {
+                var entityContextBuilder = new EntityContextBuilder();
+                var entityContext = entityContextBuilder.Build(context);
+                context.SetItem(EntityContext, entityContext);
+                return entityContext;
+            }
+            return context.GetItem<EntityContext>(EntityContext);
+        }
     }
 }
