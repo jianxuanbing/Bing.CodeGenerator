@@ -9,19 +9,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using @(Model.GetDomainName()).Models;
 
-namespace @(project.Module).Data.Mappings.@(schema.Name).MySql
+namespace @(project.Module).Data.Mappings.@(schema.Name).PgSql
 {
     /// <summary>
     /// @entity.Description 映射配置
     /// </summary>
-    public class @(entity.ClassName)Map : Bing.Datas.EntityFramework.MySql.AggregateRootMap<@entity.ClassName>
+    public class @(entity.ClassName)Map : Bing.Datas.EntityFramework.PgSql.AggregateRootMap<@entity.ClassName>
     {
         /// <summary>
         /// 映射表
         /// </summary>
         protected override void MapTable( EntityTypeBuilder<@entity.ClassName> builder ) 
         {
-            builder.ToTable( "@(entity.TableSchema).@(entity.ClassName)" );
+            builder.ToTable( "@(entity.TableName)", "@(entity.TableSchema)" );
         }
                 
         /// <summary>

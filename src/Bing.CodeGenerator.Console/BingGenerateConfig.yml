@@ -71,7 +71,16 @@ Build:
       Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
       Name: '{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
       Extension: '.csproj'
-  # 仓储实现类生成
+  # 仓储生成
+  RepositoryInterface:
+    Type: SchemaTable
+    Module: Repositories
+    TemplateEngine:
+      Path: Domains/IRepository.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: 'I{{Items.CurrentTable.ConvertedName}}Repository'
+      Extension: '.cs'
   RepositoryImpl:
     Type: SchemaTable
     Module: Repositories
@@ -99,4 +108,89 @@ Build:
     Output:
       Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}.Base'
+      Extension: '.cs'
+  # 工厂生成
+  Factory:
+    Type: SchemaTable
+    Module: Factories
+    TemplateEngine:
+      Path: Domains/Factory.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Factory'
+      Extension: '.cs'
+  # 映射生成
+  MySqlMapping:
+    Type: SchemaTable
+    Module: Mappings
+    TemplateEngine:
+      Path: Datas/MySql/Mapping.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/MySql'
+      Name: '{{Items.CurrentTable.ConvertedName}}Map'
+      Extension: '.cs'
+  PgSqlMapping:
+    Type: SchemaTable
+    Module: Mappings
+    TemplateEngine:
+      Path: Datas/PgSql/Mapping.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/PgSql'
+      Name: '{{Items.CurrentTable.ConvertedName}}Map'
+      Extension: '.cs'
+  SqlServerMapping:
+    Type: SchemaTable
+    Module: Mappings
+    TemplateEngine:
+      Path: Datas/SqlServer/Mapping.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/SqlServer'
+      Name: '{{Items.CurrentTable.ConvertedName}}Map'
+      Extension: '.cs'
+  # 数据传输对象生成
+  Dto:
+    Type: SchemaTable
+    Module: Dtos
+    TemplateEngine:
+      Path: Services/Dto.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Dto'
+      Extension: '.cs'
+  DtoExtensions:
+    Type: SchemaTable
+    Module: Extensions
+    TemplateEngine:
+      Path: Services/DtoExtensions.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/Dtos/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Name: 'Extensions.{{Items.CurrentTable.ConvertedName}}'
+      Extension: '.cs'
+  Query:
+    Type: SchemaTable
+    Module: Queries
+    TemplateEngine:
+      Path: Services/Query.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Query'
+      Extension: '.cs'
+  # 服务生成
+  ServiceInterface:
+    Type: SchemaTable
+    Module: Abstractions
+    TemplateEngine:
+      Path: Services/IService.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: 'I{{Items.CurrentTable.ConvertedName}}Service'
+      Extension: '.cs'
+  ServiceImpl:
+    Type: SchemaTable
+    Module: Implements
+    TemplateEngine:
+      Path: Services/Service.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'

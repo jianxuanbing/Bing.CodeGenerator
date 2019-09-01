@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Bing.CodeGenerator.Helpers;
 
 namespace Bing.CodeGenerator.Extensions
 {
@@ -148,5 +149,23 @@ namespace Bing.CodeGenerator.Extensions
         /// </summary>
         /// <param name="text">文本</param>
         public static bool IsKeyword(this string text) => CsharpKeywords.Contains(text);
+
+        /// <summary>
+        /// 转换为CamelCase(小驼峰式)字符串
+        /// </summary>
+        /// <example>
+        ///     <code>Str.ToCamelCase("FOOBAR")  // "foobar"</code>
+        ///     <code>Str.ToCamelCase("FOO_BAR") // "fooBar"</code>
+        ///     <code>Str.ToCamelCase("FooBar")  // "fooBar"</code>
+        ///     <code>Str.ToCamelCase("foo bar") // "fooBar"</code>
+        /// </example>
+        /// <param name="value">值</param>
+        public static string ToCamelCase(this string value) => Str.ToCamelCase(value);
+
+        /// <summary>
+        /// 转换为字段名
+        /// </summary>
+        /// <param name="value">值</param>
+        public static string ToFieldName(this string value) => $"_{Str.ToCamelCase(value)}";
     }
 }

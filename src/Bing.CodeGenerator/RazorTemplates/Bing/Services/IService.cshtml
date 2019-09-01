@@ -1,0 +1,21 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Bing.Applications;
+using @($"{project.Module}.Service.Dtos.{schema.Name}");
+using @($"{project.Module}.Service.Queries.{schema.Name}");
+
+namespace @($"{project.Module}.Service.Abstractions.{schema.Name}")
+{
+    /// <summary>
+    /// @entity.Description 服务
+    /// </summary>
+    public interface I@(entity.ClassName)Service : ICrudService<@(entity.ClassName)Dto, @(entity.ClassName)Query>
+    {
+    }
+}

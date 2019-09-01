@@ -1,0 +1,41 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using Bing.Applications.Dtos;
+
+namespace @($"{project.Module}.Service.Dtos.{schema.Name}")
+{
+    /// <summary>
+    /// @entity.Description 数据传输对象
+    /// </summary>
+    public class @(entity.ClassName)Dto : DtoBase
+    {
+@foreach (var property in entity.Properties)
+{
+    <text>
+        /// <summary>
+        /// @property.Description
+        /// </summary>
+        [Display(Name = "@property.Description")]
+    @if (property.HasValidate())
+    {
+        @:@property.Validate()
+    }
+    @if (property.DataType == DbType.Boolean)
+    {
+        @:public bool? @property.PropertyName.ToSafeName() { get; set; }
+        continue;
+    }
+        public @property.TypeName @property.PropertyName.ToSafeName() { get; set; }
+    </text>
+}
+    }
+}
