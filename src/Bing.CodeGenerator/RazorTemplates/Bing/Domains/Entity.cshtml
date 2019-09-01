@@ -4,15 +4,17 @@
 @{
     var project = Model.Project;
     var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
     var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
 
 namespace @($"{project.Module}.Domain.Models")
 {
     /// <summary>
-    /// @table.GetDescription()
+    /// @entity.Description
     /// </summary>
-    public partial class @table.Name
+    public partial class @entity.ClassName
     {
     }
 }

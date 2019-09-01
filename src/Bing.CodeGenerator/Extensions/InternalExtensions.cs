@@ -6,7 +6,7 @@ namespace Bing.CodeGenerator.Extensions
     /// <summary>
     /// 内部扩展
     /// </summary>
-    internal static class InternalExtensions
+    public static class InternalExtensions
     {
         /// <summary>
         /// C#类型别名
@@ -14,10 +14,28 @@ namespace Bing.CodeGenerator.Extensions
         private static readonly Dictionary<string, string> CsharpTypeAlias;
 
         /// <summary>
+        /// C#关键字
+        /// </summary>
+        private static readonly HashSet<string> CsharpKeywords;
+
+        /// <summary>
         /// 初始化一个<see cref="InternalExtensions"/>类型的静态实例
         /// </summary>
         static InternalExtensions()
         {
+            CsharpKeywords = new HashSet<string>(StringComparer.Ordinal)
+            {
+                "as", "do", "if", "in", "is",
+                "for", "int", "new", "out", "ref", "try",
+                "base", "bool", "byte", "case", "char", "else", "enum", "goto", "lock", "long", "null", "this", "true", "uint", "void",
+                "break", "catch", "class", "const", "event", "false", "fixed", "float", "sbyte", "short", "throw", "ulong", "using", "while",
+                "double", "extern", "object", "params", "public", "return", "sealed", "sizeof", "static", "string", "struct", "switch", "typeof", "unsafe", "ushort",
+                "checked", "decimal", "default", "finally", "foreach", "private", "virtual",
+                "abstract", "continue", "delegate", "explicit", "implicit", "internal", "operator", "override", "readonly", "volatile",
+                "__arglist", "__makeref", "__reftype", "interface", "namespace", "protected", "unchecked",
+                "__refvalue", "stackalloc"
+            };
+
             CsharpTypeAlias = new Dictionary<string, string>(16)
             {
                 {"System.Int16", "short"},
@@ -113,5 +131,22 @@ namespace Bing.CodeGenerator.Extensions
                 uniqueName = string.Concat(name, count++);
             return uniqueName;
         }
+
+        /// <summary>
+        /// 转换为安全名称
+        /// </summary>
+        /// <param name="name">名称</param>
+        public static string ToSafeName(this string name)
+        {
+            if (!name.IsKeyword())
+                return name;
+            return $"@{name}";
+        }
+
+        /// <summary>
+        /// 是否关键词
+        /// </summary>
+        /// <param name="text">文本</param>
+        public static bool IsKeyword(this string text) => CsharpKeywords.Contains(text);
     }
 }

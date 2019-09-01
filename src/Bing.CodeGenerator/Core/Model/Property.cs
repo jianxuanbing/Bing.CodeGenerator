@@ -332,7 +332,7 @@ namespace Bing.CodeGenerator.Core
         /// <param name="result">结果</param>
         private void ValidateRequired(List<string> result)
         {
-            if(IsRequired==false)
+            if (IsRequired == false)
                 return;
             if (DataType == DbType.Boolean)
                 return;
@@ -345,7 +345,7 @@ namespace Bing.CodeGenerator.Core
         /// <param name="result">结果</param>
         private void ValidateStringLength(List<string> result)
         {
-            if(SystemType!=typeof(string))
+            if (SystemType != typeof(string))
                 return;
             if (MaxLength == -1)
                 return;
@@ -366,7 +366,7 @@ namespace Bing.CodeGenerator.Core
             if (validations.Count == 1)
                 result.Append(validations[0]);
             else
-                AddValidations(result,validations);
+                AddValidations(result, validations);
             return result.ToString();
         }
 

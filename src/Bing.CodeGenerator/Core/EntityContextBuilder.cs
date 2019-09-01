@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Bing.CodeGenerator.Entity;
 using Bing.CodeGenerator.Extensions;
 using Bing.CodeGenerator.Helpers;
@@ -113,7 +112,8 @@ namespace Bing.CodeGenerator.Core
                 property.Description = column.Description;
 
                 property.NativeType = column.DbType;
-                property.SystemType = Type.GetType(column.LanguageType);
+                property.SystemType = TypeConverter.ParseType(column.LanguageType, column.IsNullable);
+                property.DataType = TypeConverter.ParseDbType(column.LanguageType, column.IsNullable);
 
                 property.IsPrimaryKey = column.IsPrimaryKey;
                 property.IsNullable = column.IsNullable;

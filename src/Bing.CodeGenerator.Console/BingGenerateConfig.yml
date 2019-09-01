@@ -5,7 +5,7 @@ DataSource:
   Parameters:
     DbName: Erp
     DbProvider: SqlServer
-    ConnectionString: Data Source=DESKTOP-I6SANBT\JIAN;Initial Catalog=Tms;User Id=sa;Password=jian123456;Integrated Security=True
+    ConnectionString: 
 Language: CSharp
 TemplateEngine:
   Name: RazorTest
