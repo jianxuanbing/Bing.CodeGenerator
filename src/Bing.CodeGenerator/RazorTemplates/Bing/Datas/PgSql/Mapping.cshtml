@@ -31,7 +31,12 @@ namespace @(project.Module).Data.Mappings.@(schema.Name).PgSql
         {
 @foreach (var property in entity.Properties)
 {
-            @:@property.GetPropertyExpression()
+    var result = @property.GetPropertyExpression();
+    if (string.IsNullOrWhiteSpace(result))
+    {
+        continue;
+    }
+    @result
 }
 @if (entity.IsTreeEntity())
 {

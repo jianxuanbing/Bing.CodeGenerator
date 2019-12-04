@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using Bing.CodeGenerator.Core;
 
@@ -10,6 +9,10 @@ namespace Bing.CodeGenerator.Extensions
     /// </summary>
     public static class PropertyExtensions
     {
+        /// <summary>
+        /// 获取属性表达式字符串
+        /// </summary>
+        /// <param name="property">属性</param>
         public static string GetPropertyExpression(this Property property)
         {
             bool isString = property.SystemType == typeof(string);
@@ -26,7 +29,7 @@ namespace Bing.CodeGenerator.Extensions
                 return string.Empty;
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("            //" + property.Description);
+            sb.AppendLine("            // " + property.Description);
 
             sb.Append(' ', 3 * 4);
             sb.Append("builder.Property(t => t.");

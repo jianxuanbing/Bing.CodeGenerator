@@ -44,7 +44,11 @@
     {
         @foreach(var schema in schemas)
         {
-            if (schema.Name.ToLower() == "dbo")
+            if (schema.Name.ToLower() == "dbo" && !schema.Tables.Any())
+            {
+                continue;
+            }
+            if (schema.Name.ToLower() == "dbo" && schema.Tables.Any())
             {
         <ProjectReference Include="..\@GetDomainName()\@(GetDomainName()).csproj" />
             }

@@ -5,7 +5,7 @@ DataSource:
   Parameters:
     DbName: Erp
     DbProvider: SqlServer
-    ConnectionString: 
+    ConnectionString: Data Source=;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;
 Language: CSharp
 TemplateEngine:
   Name: RazorTest
@@ -57,7 +57,7 @@ Build:
       {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}},
       {Key: 'Proj-Api.cshtml', Output: { Path: 'src/{{Project.Module}}', Name: '{{Project.Module}}', Extension: '.csproj'}},
       {Key: 'Log-NLog.cshtml', Output: { Path: 'src/{{Project.Module}}', Name: 'nlog', Extension: '.config'}},
-      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: 'I{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
       {Key: 'Datas/MySql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/MySql', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
       {Key: 'Datas/PgSql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/PgSql', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
       {Key: 'Datas/SqlServer/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/SqlServer', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}}, ]
