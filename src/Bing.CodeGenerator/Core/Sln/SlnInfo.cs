@@ -117,7 +117,7 @@ namespace Bing.CodeGenerator.Core
         {
             var src = AddDir(this, "01-src");
             var presentation = AddDir(src, "01-Presentation");
-            AddProject(presentation, $"{module}.Api", $"src\\{module}.Api\\{module}.Api.csproj");
+            AddProject(presentation, $"{module}", $"src\\{module}\\{module}.csproj");
             var service = AddDir(src, "02-Service");
             AddProject(service, $"{module}.Service", $"src\\{module}.Service\\{module}.Service.csproj");
             var domain = AddDir(src, "03-Domain");
@@ -147,8 +147,8 @@ namespace Bing.CodeGenerator.Core
             AddProject(infrastructure, $"02-{module}.Data",
                 $"src\\{module}.Data\\{module}.Data.csproj");
             var test = AddDir(this, "02-test");
-            AddProject(test, $"{module}.Tests", $"test\\{module}.Tests\\{module}.Tests.csproj");
-            AddProject(test, $"{module}.Tests.Integration", $"test\\{module}.Tests.Integration\\{module}.Tests.Integration.csproj");
+            //AddProject(test, $"{module}.Tests", $"test\\{module}.Tests\\{module}.Tests.csproj");
+            //AddProject(test, $"{module}.Tests.Integration", $"test\\{module}.Tests.Integration\\{module}.Tests.Integration.csproj");
         }
 
         /// <summary>

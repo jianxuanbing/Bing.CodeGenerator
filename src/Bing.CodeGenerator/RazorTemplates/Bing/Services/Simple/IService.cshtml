@@ -6,11 +6,14 @@
     var table = Model.GetCurrentTable();
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
-@if (entity.IsTreeEntity())
+using Bing.Applications;
+
+namespace @($"{project.Module}.Service.Abstractions.{schema.Name}")
 {
-    await Html.RenderPartialAsync("Crud/Tree/ITreeService.cshtml", Model);
-}
-else
-{
-    await Html.RenderPartialAsync("Crud/ICrudService.cshtml", Model);
+    /// <summary>
+    /// @entity.Description 服务
+    /// </summary>
+    public interface I@(entity.ClassName)Service : IService
+    {
+    }
 }

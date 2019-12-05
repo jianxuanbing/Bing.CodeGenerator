@@ -1,0 +1,73 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using System;
+using System.ComponentModel.DataAnnotations;
+using Bing;
+using Bing.Datas.Queries.Trees;
+
+namespace @($"{project.Module}.Service.Queries.{schema.Name}")
+{
+    /// <summary>
+    /// @entity.Description 查询参数
+    /// </summary>
+    public class @(entity.ClassName)Query : TreeQueryParameter
+    {
+@foreach (var property in entity.Properties)
+{
+    if (property.IsFilterByQueryObject())
+    {
+        continue;
+    }
+    if (property.SystemType == typeof(DateTime))
+    {
+    <text>
+        /// <summary>
+        /// 起始@(property.Description)
+        /// </summary>
+        public DateTime? Begin@(property.PropertyName.ToSafeName()) { get; set; }
+
+        /// <summary>
+        /// 结束@(property.Description)
+        /// </summary>
+        public DateTime? End@(property.PropertyName.ToSafeName()) { get; set; }
+    </text>
+        continue;
+    }
+    @if (property.SystemType == typeof(string))
+    {
+    <text>
+        /// <summary>
+        /// @property.Description
+        /// </summary>
+        private @property.SystemType.ToNullableType(true) @property.PropertyName.ToFieldName() = string.Empty;
+        
+        /// <summary>
+        /// @property.Description
+        /// </summary>
+        [Display(Name = "@property.Description")]
+        public @property.SystemType.ToNullableType(true) @property.PropertyName.ToSafeName()
+        { 
+            get => @property.PropertyName.ToFieldName() == null ? string.Empty : @(property.PropertyName.ToFieldName().Trim());
+            set => @property.PropertyName.ToFieldName() = value;
+        }
+    </text>
+        continue;
+    }
+
+    <text>
+        /// <summary>
+        /// @property.Description
+        /// </summary>
+        [Display(Name = "@property.Description")]
+        public @property.SystemType.ToNullableType(true) @property.PropertyName.ToSafeName() { get; set; }
+    </text>
+}
+
+    }
+}

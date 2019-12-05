@@ -1,0 +1,44 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Bing.Applications;
+using @($"{project.Module}.Service.Dtos.{schema.Name}");
+using @($"{project.Module}.Service.Queries.{schema.Name}");
+using @($"{project.Module}.Service.Abstractions.{schema.Name}");
+
+namespace @($"{project.Module}.Service.Implements.{schema.Name}")
+{
+    /// <summary>
+    /// @entity.Description 服务
+    /// </summary>
+    public class @(entity.ClassName)Service : CrudServiceBase<@(entity.ClassName), @(entity.ClassName)Dto, @(entity.ClassName)Query@(entity.GetKeyTypeNoContainsGuid())>, I@(entity.ClassName)Service
+    {
+        /// <summary>
+        /// @(entity.Description)仓储
+        /// </summary>
+        protected I@(entity.ClassName)Repository @(entity.ClassName)Repository { get; set; }
+    
+        /// <summary>
+        /// 初始化一个<see cref="@(entity.ClassName)Service"/>类型的实例
+        /// </summary>
+        /// <param name="unitOfWork">工作单元</param>
+        /// <param name="@(entity.ClassName.ToCamelCase())Repository">@(entity.Description)仓储</param>
+        public @(entity.ClassName)Service( I@(project.GetUnitOfWork()) unitOfWork, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
+            : base( unitOfWork, @(entity.ClassName.ToCamelCase())Repository) {
+            @(entity.ClassName)Repository = @(entity.ClassName.ToCamelCase())Repository;
+        }
+
+        /// <summary>
+        /// 创建查询对象
+        /// </summary>
+        /// <param name="param">查询参数</param>
+        protected override IQueryBase<@(entity.ClassName)> CreateQuery( @(entity.ClassName)Query param ) {
+            return new Query< @(entity.ClassName)@(entity.GetKeyTypeNoContainsGuid()) >( param );
+        }
+    }
+}

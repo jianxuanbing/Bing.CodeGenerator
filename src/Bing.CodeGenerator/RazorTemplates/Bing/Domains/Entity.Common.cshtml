@@ -8,9 +8,9 @@
 }
 @if (entity.IsTreeEntity())
 {
-    await Html.RenderPartialAsync("Crud/Tree/ITreeService.cshtml", Model);
+    await Html.RenderPartialAsync("TreeEntity.Base.cshtml", Model);
 }
 else
 {
-    await Html.RenderPartialAsync("Crud/ICrudService.cshtml", Model);
+    await Html.RenderPartialAsync("Entity.Base.cshtml", Model);
 }

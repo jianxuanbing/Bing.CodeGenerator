@@ -14,6 +14,7 @@ using Bing;
 using Bing.Utils;
 using Bing.Domains;
 using Bing.Domains.Entities;
+using Bing.Domains.Entities.Trees;
 using Bing.Domains.Entities.Auditing;
 using Bing.Domains.Entities.Tenants;
 
@@ -23,18 +24,20 @@ namespace @($"{project.Module}.{schema.Name}.Domain.Models")
     /// @entity.Description
     /// </summary>
     [Display(Name = "@entity.Description")]
-    public partial class @table.Name : @entity.GetAggregateRootAndInterfaces()
+    public partial class @table.Name : @entity.GetTreeAggregateRootAndInterfaces()
     {
         /// <summary>
         /// 初始化一个<see cref="@entity.ClassName"/>类型的实例
         /// </summary>
-        public @(entity.ClassName)() : this(@entity.GetPkDefault()) { }
+        public @(entity.ClassName)() : this(@entity.GetPkDefault(), "", 0) { }
 
         /// <summary>
         /// 初始化一个<see cref="@entity.ClassName"/>类型的实例
         /// </summary>
         /// <param name="id">@table.GetDescription()标识</param>
-        public @(entity.ClassName))(@entity.GetPkTypeString() id) : base(id) { }
+        /// <param name="path">路径</param>
+        /// <param name="level">级数</param>
+        public @(entity.ClassName)(@entity.GetPkTypeString() id, string path, int level) : base(id, path, level) { }
 @foreach (var property in entity.Properties)
 {
     if (property.IsPrimaryKey.SafeValue())
@@ -42,6 +45,10 @@ namespace @($"{project.Module}.{schema.Name}.Domain.Models")
         continue;
     }
     if (property.IsRowVersion.SafeValue())
+    {
+        continue;
+    }
+    if (property.IgnoreTreeEntityProperty())
     {
         continue;
     }

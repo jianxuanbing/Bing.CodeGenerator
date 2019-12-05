@@ -349,7 +349,19 @@ namespace Bing.CodeGenerator.Core
                 return;
             if (MaxLength == -1)
                 return;
-            result.Add($"[StringLength( {MaxLength}, ErrorMessage = \"{Description}输入过长，不能超过{MaxLength}位\" )]");
+            if(!MaxLength.HasValue)
+                return;
+            result.Add($"[StringLength( {GetSafeMaxLength()}, ErrorMessage = \"{Description}输入过长，不能超过{GetSafeMaxLength()}位\" )]");
+        }
+
+        /// <summary>
+        /// 获取安全最大长度
+        /// </summary>
+        private int GetSafeMaxLength()
+        {
+            if (NativeType == "nvarchar")
+                return MaxLength.SafeValue() / 2;
+            return MaxLength.SafeValue();
         }
 
         #endregion

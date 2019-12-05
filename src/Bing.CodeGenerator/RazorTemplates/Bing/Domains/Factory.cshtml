@@ -26,7 +26,7 @@ namespace @($"{project.Module}.{schema.Name}.Domain.Factories")
         public static @entity.ClassName Create(
 @foreach (var property in entity.Properties)
 {
-        @:@property.TypeName @property.PropertyName.ToSafeName().ToCamelCase()@entity.GetComma(property,false)
+            @:@property.TypeName @property.PropertyName.ToSafeName().ToCamelCase()@entity.GetComma(property,false)
 }
         )
         {

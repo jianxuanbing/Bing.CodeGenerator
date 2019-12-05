@@ -26,11 +26,9 @@
     <ItemGroup>
 @foreach (var table in Model.GetCurrentSchema().Tables)
 {
-<text>
         <Compile Update="Models/@(table.Name).*.cs">
             <DependentUpon>@(table.Name).cs</DependentUpon>
         </Compile>
-</text>
 }
     </ItemGroup>
 </Project>

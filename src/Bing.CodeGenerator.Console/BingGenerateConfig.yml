@@ -104,7 +104,7 @@ Build:
     Type: SchemaTable
     Module: Models
     TemplateEngine:
-      Path: Domains/Entity.Base.cshtml
+      Path: Domains/Entity.Common.cshtml
     Output:
       Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}.Base'
@@ -193,4 +193,14 @@ Build:
     Output:
       Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Service'
+      Extension: '.cs'
+# 表现层生成
+  ApiController:
+    Type: SchemaTable
+    Module: Apis
+    TemplateEngine:
+      Path: Presentation/ApiController.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Controller'
       Extension: '.cs'
