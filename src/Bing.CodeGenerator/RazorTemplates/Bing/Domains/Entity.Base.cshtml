@@ -12,12 +12,14 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Bing;
 using Bing.Utils;
+using Bing.Extensions;
+using Bing.Helpers;
+using Bing.Auditing;
 using Bing.Domains;
 using Bing.Domains.Entities;
-using Bing.Domains.Entities.Auditing;
 using Bing.Domains.Entities.Tenants;
 
-namespace @($"{project.Module}.{schema.Name}.Domain.Models")
+namespace @(Model.GetDomainName("Models"))
 {
     /// <summary>
     /// @entity.Description
@@ -34,7 +36,7 @@ namespace @($"{project.Module}.{schema.Name}.Domain.Models")
         /// 初始化一个<see cref="@entity.ClassName"/>类型的实例
         /// </summary>
         /// <param name="id">@table.GetDescription()标识</param>
-        public @(entity.ClassName))(@entity.GetPkTypeString() id) : base(id) { }
+        public @(entity.ClassName)(@entity.GetPkTypeString() id) : base(id) { }
 @foreach (var property in entity.Properties)
 {
     if (property.IsPrimaryKey.SafeValue())

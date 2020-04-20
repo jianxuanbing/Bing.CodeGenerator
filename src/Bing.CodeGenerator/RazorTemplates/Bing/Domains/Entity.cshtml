@@ -9,7 +9,7 @@
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
 
-namespace @($"{project.Module}.{schema.Name}.Domain.Models")
+namespace @(Model.GetDomainName("Models"))
 {
     /// <summary>
     /// @entity.Description

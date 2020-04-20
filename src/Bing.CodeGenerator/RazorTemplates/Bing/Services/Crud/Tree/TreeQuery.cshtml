@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using Bing;
 using Bing.Datas.Queries.Trees;
 
-namespace @($"{project.Module}.Service.Queries.{schema.Name}")
+namespace @(Model.GetServiceName("Queries"))
 {
     /// <summary>
     /// @entity.Description 查询参数

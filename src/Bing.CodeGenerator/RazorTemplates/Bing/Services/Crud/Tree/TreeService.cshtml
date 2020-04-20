@@ -9,11 +9,11 @@
 using Bing.Applications;
 using Bing.Applications.Trees;
 using Bing.Domains.Repositories;
-using @($"{project.Module}.Service.Dtos.{schema.Name}");
-using @($"{project.Module}.Service.Queries.{schema.Name}");
-using @($"{project.Module}.Service.Abstractions.{schema.Name}");
+using @(Model.GetServiceName("Dtos"));
+using @(Model.GetServiceName("Queries"));
+using @(Model.GetServiceName("Abstractions"));
 
-namespace @($"{project.Module}.Service.Implements.{schema.Name}")
+namespace @(Model.GetServiceName("Implements"))
 {
     /// <summary>
     /// @entity.Description 服务

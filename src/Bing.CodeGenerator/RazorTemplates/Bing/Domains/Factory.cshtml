@@ -7,9 +7,9 @@
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
 using System;
-using @(Model.GetDomainName()).Models;
+using @(Model.GetDomainName("Models"));
 
-namespace @($"{project.Module}.{schema.Name}.Domain.Factories")
+namespace @(Model.GetDomainName("Factories"))
 {
     /// <summary>
     /// @(entity.Description)工厂

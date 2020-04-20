@@ -1,0 +1,28 @@
+﻿{
+  "CodeGenDict": {
+    "Erp": {
+      "SlnName": "Utopa.Erp",
+      "DbName": "Erp",
+      "DbProvider": "SqlServer",
+      "DbConnectionString": "Data Source=;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;",
+      "OutputPath": "D:\\demo\\generate_erp",
+      "UnitOfWorkName": "Erp"
+    },
+    "Wms": {
+      "SlnName": "Utopa.Wms",
+      "DbName": "Wms",
+      "DbProvider": "SqlServer",
+      "DbConnectionString": "Data Source=;Initial Catalog=Wms;User Id=sa;Password=Bing2019.00;",
+      "OutputPath": "D:\\demo\\generate_wms",
+      "UnitOfWorkName": "Wms"
+    },
+    "Tms": {
+      "SlnName": "Utopa.Tms",
+      "DbName": "Tms",
+      "DbProvider": "SqlServer",
+      "DbConnectionString": "Data Source=;Initial Catalog=Tms;User Id=sa;Password=Bing2019.00;",
+      "OutputPath": "D:\\demo\\generate_tms",
+      "UnitOfWorkName": "Tms"
+    }
+  }
+}

@@ -18,20 +18,27 @@ namespace @($"{project.Module}.Apis.{schema.Name}")
     /// <summary>
     /// @entity.Description 控制器
     /// </summary>
-    public class @(entity.ClassName)Controller : CrudControllerBase<@(entity.ClassName)Dto, @(entity.ClassName)Query>
+    public class @(entity.ClassName)Controller : ApiControllerBase
     {
         /// <summary>
-        /// @(entity.Description)服务
+        /// @(entity.Description) 服务
         /// </summary>
         public I@(entity.ClassName)Service @(entity.ClassName)Service { get; }
     
         /// <summary>
+        /// @(entity.Description) 查询服务
+        /// </summary>
+        public IQuery@(entity.ClassName)Service Query@(entity.ClassName)Service { get; }
+
+        /// <summary>
         /// 初始化一个<see cref="@(entity.ClassName)Controller"/>类型的实例
         /// </summary>
         /// <param name="service">@(entity.Description)服务</param>
-        public @(entity.ClassName)Service( I@(entity.ClassName)Service service ) : base( service ) 
+        /// <param name="queryService">@(entity.Description)查询服务</param>
+        public @(entity.ClassName)Service( I@(entity.ClassName)Service service, IQuery@(entity.ClassName)Service queryService)
         {
             @(entity.ClassName)Service = service;
+            Query@(entity.ClassName)Service = queryService;
         }
     }
 }

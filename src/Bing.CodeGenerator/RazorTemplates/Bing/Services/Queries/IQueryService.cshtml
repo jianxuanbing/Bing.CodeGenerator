@@ -7,16 +7,13 @@
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
 using Bing.Applications;
-using Bing.Applications.Trees;
-using @(Model.GetServiceName("Dtos"));
-using @(Model.GetServiceName("Queries"));
 
 namespace @(Model.GetServiceName("Abstractions"))
 {
     /// <summary>
-    /// @entity.Description 服务
+    /// @entity.Description 查询服务
     /// </summary>
-    public interface I@(entity.ClassName)Service : ITreeService<@(entity.ClassName)Dto, @(entity.ClassName)Query>
+    public interface IQuery@(entity.ClassName)Service : IService
     {
     }
 }

@@ -4,10 +4,10 @@
     var table = Model.GetCurrentTable();
 }
 using Bing.Datas.EntityFramework.Core;
-using @(Model.GetDomainName()).Models;
-using @(Model.GetDomainName()).Repositories;
+using @(Model.GetDomainName("Models"));
+using @(Model.GetDomainName("Repositories"));
 
-namespace @(project.Module).Data.Repositories.@(Model.GetCurrentSchema().Name)
+namespace @(Model.GetDataName("Repositories"))
 {
     /// <summary>
     /// @(table.Description) 仓储

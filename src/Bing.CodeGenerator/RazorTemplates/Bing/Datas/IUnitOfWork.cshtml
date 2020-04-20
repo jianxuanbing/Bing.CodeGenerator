@@ -2,7 +2,7 @@
 @{
     var project = Model.Project;
 }
-namespace @($"{project.Module}.Data")
+namespace @(Model.GetDataName())
 {
     /// <summary>
     /// 工作单元

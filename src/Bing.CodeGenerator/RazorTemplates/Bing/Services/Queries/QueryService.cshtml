@@ -7,33 +7,34 @@
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
 using Bing.Applications;
+using Bing.Datas.Sql;
 using @(Model.GetServiceName("Abstractions"));
 
 namespace @(Model.GetServiceName("Implements"))
 {
     /// <summary>
-    /// @entity.Description 服务
+    /// @entity.Description 查询服务
     /// </summary>
-    public class @(entity.ClassName)Service : ServiceBase, I@(entity.ClassName)Service
+    public class Query@(entity.ClassName)Service : ServiceBase, IQuery@(entity.ClassName)Service
     {
         /// <summary>
-        /// 工作单元
+        /// Sql查询对象
         /// </summary>
-        protected I@(project.GetUnitOfWork()) UnitOfWork { get; set; }
-        
+        protected ISqlQuery SqlQuery { get; set; }
+
         /// <summary>
         /// @(entity.Description)仓储
         /// </summary>
         protected I@(entity.ClassName)Repository @(entity.ClassName)Repository { get; set; }
     
         /// <summary>
-        /// 初始化一个<see cref="@(entity.ClassName)Service"/>类型的实例
+        /// 初始化一个<see cref="Query@(entity.ClassName)Service"/>类型的实例
         /// </summary>
-        /// <param name="unitOfWork">工作单元</param>
+        /// <param name="sqlQuery">Sql查询对象</param>
         /// <param name="@(entity.ClassName.ToCamelCase())Repository">@(entity.Description)仓储</param>
-        public @(entity.ClassName)Service( I@(project.GetUnitOfWork()) unitOfWork, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
+        public @(entity.ClassName)Service( I@(project.GetUnitOfWork()) sqlQuery, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
         {
-            UnitOfWork = unitOfWork
+            SqlQuery = sqlQuery
             @(entity.ClassName)Repository = @(entity.ClassName.ToCamelCase())Repository;
         }
     }

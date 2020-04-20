@@ -8,9 +8,9 @@
 }
 using Bing;
 using Bing.Utils.Extensions;
-using @(Model.GetDomainName()).Models;
+using @(Model.GetDomainName("Models"));
 
-namespace @($"{project.Module}.Service.Dtos.{schema.Name}.Extensions")
+namespace @(Model.GetServiceName("Dtos","Extensions"))
 {
     /// <summary>
     /// @entity.Description 数据传输对象扩展

@@ -6,15 +6,14 @@
     var table = Model.GetCurrentTable();
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
-using Bing.Domains.Repositories;
-using @(Model.GetDomainName("Models"));
+using Bing.Domains.Services;
 
-namespace @(Model.GetDomainName("Repositories"))
+namespace @(Model.GetDomainName("Services","Abstractions"))
 {
     /// <summary>
-    /// @(entity.Description)仓储
+    /// @(entity.Description)管理
     /// </summary>
-    public interface I@(entity.ClassName)Repository : IRepository<@(entity.ClassName)@(entity.GetKeyTypeNoContainsGuid())>
+    public interface I@(entity.ClassName)Manager : IDomainService
     {
     }
 }

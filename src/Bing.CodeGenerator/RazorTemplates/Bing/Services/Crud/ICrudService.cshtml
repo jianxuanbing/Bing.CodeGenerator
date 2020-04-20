@@ -7,10 +7,10 @@
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
 using Bing.Applications;
-using @($"{project.Module}.Service.Dtos.{schema.Name}");
-using @($"{project.Module}.Service.Queries.{schema.Name}");
+using @(Model.GetServiceName("Dtos"));
+using @(Model.GetServiceName("Queries"));
 
-namespace @($"{project.Module}.Service.Abstractions.{schema.Name}")
+namespace @(Model.GetServiceName("Abstractions"))
 {
     /// <summary>
     /// @entity.Description 服务

@@ -1,0 +1,12 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+}
+<ItemGroup>
+@foreach (var table in Model.GetCurrentSchema().Tables)
+{
+    <Compile Update="Models/@(table.Name).*.cs">
+        <DependentUpon>@(table.Name).cs</DependentUpon>
+    </Compile>
+}
+</ItemGroup>

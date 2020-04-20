@@ -7,9 +7,9 @@
 }
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using @(Model.GetDomainName()).Models;
+using @(Model.GetDomainName("Models"));
 
-namespace @(project.Module).Data.Mappings.@(schema.Name).SqlServer
+namespace @(Model.GetDataName("Mappings","SqlServer"))
 {
     /// <summary>
     /// @entity.Description 映射配置

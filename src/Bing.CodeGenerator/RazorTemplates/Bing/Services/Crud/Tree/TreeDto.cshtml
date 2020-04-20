@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Bing.Applications.Dtos;
 
-namespace @($"{project.Module}.Service.Dtos.{schema.Name}")
+namespace @(Model.GetServiceName("Dtos"))
 {
     /// <summary>
     /// @entity.Description 数据传输对象

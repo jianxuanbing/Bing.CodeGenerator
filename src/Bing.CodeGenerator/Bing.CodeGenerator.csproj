@@ -45,6 +45,15 @@
     <None Update="RazorTemplates\Bing\Domains\Entity.Common.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="RazorTemplates\Bing\Domains\IDomainService.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Domains\ItemGroup.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Domains\DomainService.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="RazorTemplates\Bing\Domains\TreeEntity.Base.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -70,6 +79,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RazorTemplates\Bing\Presentation\ApiController.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Presentation\Simple\ApiController.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RazorTemplates\Bing\Proj-Api.cshtml">
@@ -109,6 +121,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RazorTemplates\Bing\Services\Crud\Tree\TreeService.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Services\Queries\IQueryService.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\Bing\Services\Queries\QueryService.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RazorTemplates\Bing\Services\Service.cshtml">
@@ -156,7 +174,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RazorTemplates\Bing\Presentation\Simple\" />
     <Folder Include="RazorTemplates\Bing\Tests\" />
     <Folder Include="RazorTemplates\Util\" />
   </ItemGroup>

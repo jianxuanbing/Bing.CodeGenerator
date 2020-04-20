@@ -6,10 +6,12 @@
     var table = Model.GetCurrentTable();
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Bing.Webs.Controllers;
-using @($"{project.Module}.Service.Dtos.{schema.Name}");
-using @($"{project.Module}.Service.Queries.{schema.Name}");
-using @($"{project.Module}.Service.Abstractions.{schema.Name}");
+using @(Model.GetServiceName("Dtos"));
+using @(Model.GetServiceName("Queries"));
+using @(Model.GetServiceName("Abstractions"));
 
 namespace @($"{project.Module}.Apis.{schema.Name}")
 {
