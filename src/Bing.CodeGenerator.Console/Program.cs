@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -37,8 +38,8 @@ namespace Bing.CodeGenerator.Console
             {
                 arg.Cancel = true;
                 _flag = false;
-                throw new Exception();
             };
+            
             var options = GetCodeGenOptions();
             System.Console.WriteLine("欢迎使用Bing代码生成功能器");
             var slnName = InputSlnName(options);
@@ -79,8 +80,13 @@ namespace Bing.CodeGenerator.Console
         /// </summary>
         private static CodeGenOptions GetCodeGenOptions()
         {
+            var basePath = Directory.GetCurrentDirectory();
+            if (!File.Exists(Path.Combine(basePath, CodeSettingsPath)))
+            {
+                basePath = AppDomain.CurrentDomain.BaseDirectory;
+            }
             var codeSettingsBuilder = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .SetBasePath(basePath)
                 .AddJsonFile(CodeSettingsPath, false, true);
             var configuration = codeSettingsBuilder.Build();
             var codeGenOptions = configuration.GetSection(CodeGenKey).Get<CodeGenOptions>();
