@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SmartCode.App;
@@ -25,11 +24,6 @@ namespace Bing.CodeGenerator.Console
         private const string CodeGenKey = "CodeGenDict";
 
         /// <summary>
-        /// 标识
-        /// </summary>
-        private static bool _flag = true;
-
-        /// <summary>
         /// 主函数
         /// </summary>
         public static async Task Main(string[] args)
@@ -37,7 +31,6 @@ namespace Bing.CodeGenerator.Console
             System.Console.CancelKeyPress += (sender, arg) =>
             {
                 arg.Cancel = true;
-                _flag = false;
             };
             
             var options = GetCodeGenOptions();
@@ -50,28 +43,6 @@ namespace Bing.CodeGenerator.Console
             System.Console.WriteLine("-----------------------------开始生成代码-----------------------------");
             await app.Run();
             System.Console.WriteLine("-----------------------------结束生成代码-----------------------------");
-            //try
-            //{
-            //    while (_flag)
-            //    {
-            //        var slnName = InputSlnName(options);
-            //        System.Console.WriteLine($"解决方案: {slnName}");
-            //        var slnType = InputSlnType(options);
-            //        System.Console.WriteLine($"生成代码方式: {slnType}");
-            //        var app = GetSmartCodeApp(slnType, options[slnName]);
-            //        System.Console.WriteLine("-----------------------------开始生成代码-----------------------------");
-            //        await app.Run();
-            //        System.Console.WriteLine("-----------------------------结束生成代码-----------------------------");
-            //        if (IsExit())
-            //            _flag = false;
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    System.Console.WriteLine(e);
-            //    System.Console.WriteLine("退出进程!!!");
-            //}
-            
             System.Console.ReadLine();
         }
 

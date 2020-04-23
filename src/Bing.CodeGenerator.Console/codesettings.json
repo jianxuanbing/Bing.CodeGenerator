@@ -1,6 +1,6 @@
 ﻿{
   "CodeGenDict": {
-    "Erp": {
+    "erp": {
       "SlnName": "Utopa.Erp",
       "DbName": "Erp",
       "DbProvider": "SqlServer",
@@ -8,7 +8,7 @@
       "OutputPath": "D:\\demo\\generate_erp",
       "UnitOfWorkName": "Erp"
     },
-    "Wms": {
+    "wms": {
       "SlnName": "Utopa.Wms",
       "DbName": "Wms",
       "DbProvider": "SqlServer",
@@ -16,7 +16,7 @@
       "OutputPath": "D:\\demo\\generate_wms",
       "UnitOfWorkName": "Wms"
     },
-    "Tms": {
+    "tms": {
       "SlnName": "Utopa.Tms",
       "DbName": "Tms",
       "DbProvider": "SqlServer",

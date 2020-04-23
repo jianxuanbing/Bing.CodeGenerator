@@ -8,6 +8,7 @@
 }
 using Bing.Applications;
 using Bing.Datas.Sql;
+using @(Model.GetDomainName("Repositories"));
 using @(Model.GetServiceName("Abstractions"));
 
 namespace @(Model.GetServiceName("Implements"))
@@ -34,7 +35,7 @@ namespace @(Model.GetServiceName("Implements"))
         /// <param name="@(entity.ClassName.ToCamelCase())Repository">@(entity.Description)仓储</param>
         public @(entity.ClassName)Service( I@(project.GetUnitOfWork()) sqlQuery, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
         {
-            SqlQuery = sqlQuery
+            SqlQuery = sqlQuery;
             @(entity.ClassName)Repository = @(entity.ClassName.ToCamelCase())Repository;
         }
     }

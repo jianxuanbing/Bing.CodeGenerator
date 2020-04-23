@@ -7,6 +7,8 @@
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
 using Bing.Applications;
+using @(Model.GetDataName());
+using @(Model.GetDomainName("Repositories"));
 using @(Model.GetServiceName("Abstractions"));
 
 namespace @(Model.GetServiceName("Implements"))
@@ -33,7 +35,7 @@ namespace @(Model.GetServiceName("Implements"))
         /// <param name="@(entity.ClassName.ToCamelCase())Repository">@(entity.Description)仓储</param>
         public @(entity.ClassName)Service( I@(project.GetUnitOfWork()) unitOfWork, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
         {
-            UnitOfWork = unitOfWork
+            UnitOfWork = unitOfWork;
             @(entity.ClassName)Repository = @(entity.ClassName.ToCamelCase())Repository;
         }
     }
