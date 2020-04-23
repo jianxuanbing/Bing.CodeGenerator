@@ -81,10 +81,9 @@ namespace Bing.CodeGenerator.Console
         private static CodeGenOptions GetCodeGenOptions()
         {
             var basePath = Directory.GetCurrentDirectory();
+            System.Console.WriteLine($"读取配置文件路径: {basePath}");
             if (!File.Exists(Path.Combine(basePath, CodeSettingsPath)))
-            {
                 basePath = AppDomain.CurrentDomain.BaseDirectory;
-            }
             var codeSettingsBuilder = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile(CodeSettingsPath, false, true);
