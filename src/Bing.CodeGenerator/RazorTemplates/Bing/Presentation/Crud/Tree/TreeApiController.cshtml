@@ -29,7 +29,7 @@ namespace @($"{project.Module}.Apis.{schema.Name}")
         /// 初始化一个<see cref="@(entity.ClassName)Controller"/>类型的实例
         /// </summary>
         /// <param name="service">@(entity.Description)服务</param>
-        public @(entity.ClassName)Service( I@(entity.ClassName)Service service ) : base( service ) 
+        public @(entity.ClassName)Controller( I@(entity.ClassName)Service service ) : base( service ) 
         {
             @(entity.ClassName)Service = service;
         }

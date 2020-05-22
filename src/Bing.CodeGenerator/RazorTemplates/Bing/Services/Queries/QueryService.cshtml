@@ -33,7 +33,7 @@ namespace @(Model.GetServiceName("Implements"))
         /// </summary>
         /// <param name="sqlQuery">Sql查询对象</param>
         /// <param name="@(entity.ClassName.ToCamelCase())Repository">@(entity.Description)仓储</param>
-        public @(entity.ClassName)Service( ISqlQuery sqlQuery, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
+        public Query@(entity.ClassName)Service( ISqlQuery sqlQuery, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
         {
             SqlQuery = sqlQuery;
             @(entity.ClassName)Repository = @(entity.ClassName.ToCamelCase())Repository;
