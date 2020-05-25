@@ -1,0 +1,206 @@
+﻿Module: Utopa.Erp
+Author: jian玄冰
+DataSource:
+  Name: DbTableSchema
+  Parameters:
+    DbName: Erp
+    DbProvider: SqlServer
+    ConnectionString: Data Source=;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;
+Language: CSharp
+TemplateEngine:
+  Name: RazorTest
+  Root: Util
+  Path: G:\Git\SmartCode\Bing.GenerateDemo\bin\Debug\netcoreapp2.2\RazorTemplates
+Output:
+  Type: File
+  Path: 'D:\demo\generate'
+Parameters:
+  UnitOfWork: Erp
+
+NamingConverter:
+  Table:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+  View:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+  Column:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+# 构建任务
+Build:
+  # 清空目录
+  ClearDir:
+    Type: Clear
+    Parameters:
+      Dirs: '.'
+  # 脚手架
+  Scaffolding:
+    Type: MultiTemplate
+    Output:
+      Path: '.'
+    Parameters:
+      Templates: [{Key: 'Sln.cshtml', Output: { Name: '{{Project.Module}}', Extension: '.sln'}}, 
+      {Key: 'Sln-Directory.Build.cshtml', Output: { Name: 'Directory.Build', Extension: '.props'}}, 
+      {Key: 'Sln-Version.cshtml', Output: { Path: 'build', Name: 'version', Extension: '.props'}},
+      {Key: 'Sln-Dockerfile.cshtml', Output: { Name: 'Dockerfile', Extension: ''}}, 
+      {Key: 'Sln-DockerIgnore.cshtml', Output: { Name: '.dockerignore', Extension: ''}}, 
+      {Key: 'Sln-GitIgnore.cshtml', Output: { Name: '.gitignore', Extension: ''}}, 
+      {Key: 'Proj-Infrastructure.cshtml', Output: { Path: 'src/{{Project.Module}}.Infrastructure', Name: '{{Project.Module}}.Infrastructure', Extension: '.csproj'}}, 
+      {Key: 'Proj-Data.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: '{{Project.Module}}.Data', Extension: '.csproj'}}, 
+      {Key: 'Proj-Service.cshtml', Output: { Path: 'src/{{Project.Module}}.Service', Name: '{{Project.Module}}.Service', Extension: '.csproj'}},
+      {Key: 'Proj-Api.cshtml', Output: { Path: 'src/{{Project.Module}}', Name: '{{Project.Module}}', Extension: '.csproj'}},
+      {Key: 'Log-NLog.cshtml', Output: { Path: 'src/{{Project.Module}}', Name: 'nlog', Extension: '.config'}},
+      {Key: 'Datas/IUnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data', Name: 'I{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/MySql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/MySql', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/PgSql/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/PgSql', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}},
+      {Key: 'Datas/SqlServer/UnitOfWork.cshtml', Output: { Path: 'src/{{Project.Module}}.Data/UnitOfWorks/SqlServer', Name: '{{Project.Parameters.UnitOfWork}}UnitOfWork', Extension: '.cs'}}, ]
+  # 领域脚手架
+  DomainProj:
+    Type: Schema
+    Module: Domain
+    TemplateEngine:
+      Path: Proj-Domain.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
+      Name: '{{Project.Module}}.{{Items.CurrentSchema.Name}}.{{Build.Module}}'
+      Extension: '.csproj'
+  # 仓储生成
+  RepositoryInterface:
+    Type: SchemaTable
+    Module: Repositories
+    TemplateEngine:
+      Path: Domains/IRepository.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: 'I{{Items.CurrentTable.ConvertedName}}Repository'
+      Extension: '.cs'
+  RepositoryImpl:
+    Type: SchemaTable
+    Module: Repositories
+    TemplateEngine:
+      Path: Datas/Repository.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Repository'
+      Extension: '.cs'
+  # 实体生成
+  Entity:
+    Type: SchemaTable
+    Module: Models
+    TemplateEngine:
+      Path: Domains/Entity.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}'
+      Extension: '.cs'
+  EntityBase:
+    Type: SchemaTable
+    Module: Models
+    TemplateEngine:
+      Path: Domains/Entity.Common.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}.Base'
+      Extension: '.cs'
+  # 工厂生成
+  Factory:
+    Type: SchemaTable
+    Module: Factories
+    TemplateEngine:
+      Path: Domains/Factory.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Factory'
+      Extension: '.cs'
+  # 映射生成
+  MySqlMapping:
+    Type: SchemaTable
+    Module: Mappings
+    TemplateEngine:
+      Path: Datas/MySql/Mapping.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/MySql'
+      Name: '{{Items.CurrentTable.ConvertedName}}Map'
+      Extension: '.cs'
+  PgSqlMapping:
+    Type: SchemaTable
+    Module: Mappings
+    TemplateEngine:
+      Path: Datas/PgSql/Mapping.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/PgSql'
+      Name: '{{Items.CurrentTable.ConvertedName}}Map'
+      Extension: '.cs'
+  SqlServerMapping:
+    Type: SchemaTable
+    Module: Mappings
+    TemplateEngine:
+      Path: Datas/SqlServer/Mapping.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/SqlServer'
+      Name: '{{Items.CurrentTable.ConvertedName}}Map'
+      Extension: '.cs'
+  # 数据传输对象生成
+  Dto:
+    Type: SchemaTable
+    Module: Dtos
+    TemplateEngine:
+      Path: Services/Dto.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Dto'
+      Extension: '.cs'
+  DtoExtensions:
+    Type: SchemaTable
+    Module: Extensions
+    TemplateEngine:
+      Path: Services/DtoExtensions.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/Dtos/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Name: 'Extensions.{{Items.CurrentTable.ConvertedName}}'
+      Extension: '.cs'
+  Query:
+    Type: SchemaTable
+    Module: Queries
+    TemplateEngine:
+      Path: Services/Query.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Query'
+      Extension: '.cs'
+  # 服务生成
+  ServiceInterface:
+    Type: SchemaTable
+    Module: Abstractions
+    TemplateEngine:
+      Path: Services/IService.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: 'I{{Items.CurrentTable.ConvertedName}}Service'
+      Extension: '.cs'
+  ServiceImpl:
+    Type: SchemaTable
+    Module: Implements
+    TemplateEngine:
+      Path: Services/Service.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Service'
+      Extension: '.cs'
+# 表现层生成
+  ApiController:
+    Type: SchemaTable
+    Module: Apis
+    TemplateEngine:
+      Path: Presentation/ApiController.cshtml
+    Output:
+      Path: 'src/{{Project.Module}}/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}Controller'
+      Extension: '.cs'
