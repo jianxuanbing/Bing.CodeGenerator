@@ -24,6 +24,11 @@ namespace Bing.CodeGenerator.Console
         private const string CodeGenKey = "CodeGenDict";
 
         /// <summary>
+        /// 目标框架
+        /// </summary>
+        private const string TargetFramework = "TargetFramework";
+
+        /// <summary>
         /// 主函数
         /// </summary>
         public static async Task Main(string[] args)
@@ -33,13 +38,13 @@ namespace Bing.CodeGenerator.Console
                 arg.Cancel = true;
             };
             
-            var options = GetCodeGenOptions();
-            System.Console.WriteLine("欢迎使用Bing代码生成功能器");
-            var slnName = InputSlnName(options);
+            var result = GetCodeGenOptions();
+            System.Console.WriteLine($"欢迎使用{result.Target}代码生成功能器");
+            var slnName = InputSlnName(result.Options);
             System.Console.WriteLine($"解决方案: {slnName}");
-            var slnType = InputSlnType(options);
+            var slnType = InputSlnType(result.Options);
             System.Console.WriteLine($"生成代码方式: {slnType}");
-            var app = GetSmartCodeApp(slnType, options[slnName]);
+            var app = GetSmartCodeApp(slnType, result.Options[slnName], result.Target);
             System.Console.WriteLine("-----------------------------开始生成代码-----------------------------");
             await app.Run();
             System.Console.WriteLine("-----------------------------结束生成代码-----------------------------");
@@ -49,7 +54,7 @@ namespace Bing.CodeGenerator.Console
         /// <summary>
         /// 获取代码配置
         /// </summary>
-        private static CodeGenOptions GetCodeGenOptions()
+        private static (CodeGenOptions Options,string Target) GetCodeGenOptions()
         {
             var basePath = Directory.GetCurrentDirectory();
             System.Console.WriteLine($"读取配置文件路径: {basePath}");
@@ -60,7 +65,8 @@ namespace Bing.CodeGenerator.Console
                 .AddJsonFile(CodeSettingsPath, false, true);
             var configuration = codeSettingsBuilder.Build();
             var codeGenOptions = configuration.GetSection(CodeGenKey).Get<CodeGenOptions>();
-            return codeGenOptions;
+            var target = configuration.GetSection(TargetFramework).Get<string>() ?? "Bing";
+            return (codeGenOptions, target);
         }
 
         /// <summary>
@@ -147,16 +153,17 @@ namespace Bing.CodeGenerator.Console
         /// </summary>
         /// <param name="slnType">解决方案类型</param>
         /// <param name="item">代码生成项</param>
-        private static SmartCodeApp GetSmartCodeApp(int slnType, CodeGenItem item)
+        /// <param name="targetFramework">目标框架</param>
+        private static SmartCodeApp GetSmartCodeApp(int slnType, CodeGenItem item, string targetFramework)
         {
             var buildSettings = "";
             switch (slnType)
             {
                 case 1:
-                    buildSettings = "BingSlnGenerateConfig.yml";
+                    buildSettings = $"{targetFramework}SlnGenerateConfig.yml";
                     break;
                 case 2:
-                    buildSettings = "BingCodeGenerateConfig.yml";
+                    buildSettings = $"{targetFramework}CodeGenerateConfig.yml";
                     break;
             }
 

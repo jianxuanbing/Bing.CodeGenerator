@@ -1,0 +1,114 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Util;
+using Util.Domains;
+using Util.Domains.Trees;
+using Util.Domains.Auditing;
+using Util.Domains.Tenants;
+
+namespace @(Model.GetDomainName("Models"))
+{
+    /// <summary>
+    /// @entity.Description
+    /// </summary>
+    [Display(Name = "@entity.Description")]
+    public partial class @table.Name : @entity.GetTreeAggregateRootAndInterfaces()
+    {
+        /// <summary>
+        /// 初始化一个<see cref="@entity.ClassName"/>类型的实例
+        /// </summary>
+        public @(entity.ClassName)() : this(@entity.GetPkDefault(), "", 0) { }
+
+        /// <summary>
+        /// 初始化一个<see cref="@entity.ClassName"/>类型的实例
+        /// </summary>
+        /// <param name="id">@table.GetDescription()标识</param>
+        /// <param name="path">路径</param>
+        /// <param name="level">级数</param>
+        public @(entity.ClassName)(@entity.GetPkTypeString() id, string path, int level) : base(id, path, level) { }
+@foreach (var property in entity.Properties)
+{
+    if (property.IsPrimaryKey.SafeValue())
+    {
+        continue;
+    }
+    if (property.IsRowVersion.SafeValue())
+    {
+        continue;
+    }
+    if (property.IgnoreTreeEntityProperty())
+    {
+        continue;
+    }
+    <text>
+        /// <summary>
+        /// @property.Description
+        ///</summary>
+        [Display(Name = "@property.Description")]
+    @if (property.HasValidate())
+    {
+        @:@property.Validate()
+    }
+        public @property.TypeName @property.PropertyName { get; set; }
+    </text>
+}
+
+        /// <summary>
+        /// 添加描述
+        /// </summary>
+        protected override void AddDescriptions()
+        {
+@foreach (var property in entity.Properties)
+{
+    if (property.IsRowVersion.SafeValue())
+    {
+        continue;
+    }
+    if (property.ColumnName == "IsDeleted" && property.DataType == DbType.Boolean)
+    {
+        continue;
+    }
+    if (property.IsPrimaryKey.HasValue && property.IsPrimaryKey.Value)
+    {
+            @:AddDescription( t => t.Id );
+        continue;
+    }
+            @:AddDescription( t => t.@property.PropertyName );
+}
+        }
+
+        /// <summary>
+        /// 添加变更列表
+        /// </summary>
+        protected override void AddChanges( @entity.ClassName other )
+        {
+@foreach (var property in entity.Properties)
+{
+    if (property.IsRowVersion.SafeValue())
+    {
+        continue;
+    }
+    if (property.ColumnName == "IsDeleted" && property.DataType == DbType.Boolean)
+    {
+        continue;
+    }
+    if (property.IsPrimaryKey.HasValue && property.IsPrimaryKey.Value)
+    {
+            @:AddChange( t => t.Id, other.Id );
+        continue;
+    }
+            @:AddChange( t => t.@property.PropertyName, other.@property.PropertyName );
+}
+        }
+    }
+}

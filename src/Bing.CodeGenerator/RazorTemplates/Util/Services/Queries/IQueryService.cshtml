@@ -1,0 +1,19 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Util.Applications;
+
+namespace @(Model.GetServiceName("Abstractions"))
+{
+    /// <summary>
+    /// @entity.Description 查询服务
+    /// </summary>
+    public interface IQuery@(entity.ClassName)Service : IService
+    {
+    }
+}

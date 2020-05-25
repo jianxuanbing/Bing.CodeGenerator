@@ -1,0 +1,48 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var table = Model.GetCurrentTable();
+    var schema = Model.GetCurrentSchema();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using @(Model.GetDomainName("Models"));
+
+namespace @(Model.GetDataName("Mappings","PgSql"))
+{
+    /// <summary>
+    /// @entity.Description 映射配置
+    /// </summary>
+    public class @(entity.ClassName)Map : Util.Datas.Ef.PgSql.AggregateRootMap<@entity.ClassName>
+    {
+        /// <summary>
+        /// 映射表
+        /// </summary>
+        protected override void MapTable( EntityTypeBuilder<@entity.ClassName> builder ) 
+        {
+            builder.ToTable( "@(entity.TableName)", "@(entity.TableSchema)" );
+        }
+                
+        /// <summary>
+        /// 映射属性
+        /// </summary>
+        protected override void MapProperties( EntityTypeBuilder<@entity.ClassName> builder ) 
+        {
+@foreach (var property in entity.Properties)
+{
+    var result = @property.GetPropertyExpression();
+    if (string.IsNullOrWhiteSpace(result))
+    {
+        continue;
+    }
+    @result
+}
+@if (entity.IsTreeEntity())
+{
+            @:builder.Property( t => t.Path ).HasColumnName( "Path" );
+            @:builder.Property( t => t.Level ).HasColumnName( "Level" );
+}
+        }
+    }
+}

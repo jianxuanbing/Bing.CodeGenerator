@@ -1,0 +1,49 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using Util.Ui.Data;
+
+namespace @(Model.GetServiceName("Dtos"))
+{
+    /// <summary>
+    /// @entity.Description 数据传输对象
+    /// </summary>
+    public class @(entity.ClassName)Dto : TreeDto<@(entity.ClassName)Dto>
+    {
+@foreach (var property in entity.Properties)
+{
+    if (property.IsPrimaryKey.SafeValue())
+    {
+        continue;
+    }
+    if (property.IgnoreTreeEntityProperty())
+    {
+        continue;
+    }
+    <text>
+        /// <summary>
+        /// @property.Description
+        /// </summary>
+        [Display(Name = "@property.Description")]
+    @if (property.HasValidate())
+    {
+        @:@property.Validate()
+    }
+    @if (property.DataType == DbType.Boolean)
+    {
+    @:public bool? @property.PropertyName.ToSafeName() { get; set; }
+        continue;
+    }
+    public @property.TypeName @property.PropertyName.ToSafeName() { get; set; }
+    </text>
+}
+    }
+}

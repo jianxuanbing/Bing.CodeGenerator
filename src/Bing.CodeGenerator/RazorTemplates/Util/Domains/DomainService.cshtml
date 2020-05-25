@@ -1,0 +1,22 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var table = Model.GetCurrentTable();
+}
+using Util.Domains.Services;
+using @(Model.GetDomainName("Models"));
+using @(Model.GetDomainName("Services","Abstractions"));
+
+namespace @(Model.GetDomainName("Services","Implements"))
+{
+    /// <summary>
+    /// @(table.Description) 管理
+    /// </summary>
+    public class @(table.ConvertedName)Manager : DomainServiceBase, I@(table.ConvertedName)Manager
+    {
+        /// <summary>
+        /// 初始化一个<see cref="@(table.ConvertedName)Manager"/>类型的实例
+        /// </summary>
+        public @(table.ConvertedName)Manager() { }
+    }
+}

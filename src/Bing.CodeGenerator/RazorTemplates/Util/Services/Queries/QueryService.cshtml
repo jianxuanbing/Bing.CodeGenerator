@@ -1,0 +1,42 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Util.Applications;
+using Util.Datas.Sql;
+using @(Model.GetDomainName("Repositories"));
+using @(Model.GetServiceName("Abstractions"));
+
+namespace @(Model.GetServiceName("Implements"))
+{
+    /// <summary>
+    /// @entity.Description 查询服务
+    /// </summary>
+    public class Query@(entity.ClassName)Service : ServiceBase, IQuery@(entity.ClassName)Service
+    {
+        /// <summary>
+        /// Sql查询对象
+        /// </summary>
+        protected ISqlQuery SqlQuery { get; set; }
+
+        /// <summary>
+        /// @(entity.Description)仓储
+        /// </summary>
+        protected I@(entity.ClassName)Repository @(entity.ClassName)Repository { get; set; }
+    
+        /// <summary>
+        /// 初始化一个<see cref="Query@(entity.ClassName)Service"/>类型的实例
+        /// </summary>
+        /// <param name="sqlQuery">Sql查询对象</param>
+        /// <param name="@(entity.ClassName.ToCamelCase())Repository">@(entity.Description)仓储</param>
+        public Query@(entity.ClassName)Service( ISqlQuery sqlQuery, I@(entity.ClassName)Repository @(entity.ClassName.ToCamelCase())Repository )
+        {
+            SqlQuery = sqlQuery;
+            @(entity.ClassName)Repository = @(entity.ClassName.ToCamelCase())Repository;
+        }
+    }
+}

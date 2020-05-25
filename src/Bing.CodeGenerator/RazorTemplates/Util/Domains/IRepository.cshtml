@@ -1,0 +1,20 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Util.Domains.Repositories;
+using @(Model.GetDomainName("Models"));
+
+namespace @(Model.GetDomainName("Repositories"))
+{
+    /// <summary>
+    /// @(entity.Description)仓储
+    /// </summary>
+    public interface I@(entity.ClassName)Repository : IRepository<@(entity.ClassName)@(entity.GetKeyTypeNoContainsGuid())>
+    {
+    }
+}

@@ -1,0 +1,21 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Util.Applications.Trees;
+using @(Model.GetServiceName("Dtos"));
+using @(Model.GetServiceName("Queries"));
+
+namespace @(Model.GetServiceName("Abstractions"))
+{
+    /// <summary>
+    /// @entity.Description 服务
+    /// </summary>
+    public interface I@(entity.ClassName)Service : ITreeService<@(entity.ClassName)Dto, @(entity.ClassName)Query>
+    {
+    }
+}

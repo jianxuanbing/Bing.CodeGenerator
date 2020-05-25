@@ -1,0 +1,22 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+}
+using Microsoft.EntityFrameworkCore;
+
+namespace @(Model.GetDataName()).UnitOfWorks.MySql
+{
+    /// <summary>
+    /// 工作单元
+    /// </summary>
+    public class @project.GetUnitOfWork() : Util.Datas.Ef.MySql.UnitOfWork, I@(project.GetUnitOfWork())
+    {
+        /// <summary>
+        /// 初始化一个<see cref="@project.GetUnitOfWork()"/>类型的实例
+        /// </summary>
+        /// <param name="options">配置项</param>
+        public @(project.GetUnitOfWork())( DbContextOptions<@project.GetUnitOfWork()> options ) : base( options ) 
+        {
+        }
+    }
+}

@@ -1,0 +1,23 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var table = Model.GetCurrentTable();
+}
+using Util.Datas.Ef.Core;
+using @(Model.GetDomainName("Models"));
+using @(Model.GetDomainName("Repositories"));
+
+namespace @(Model.GetDataName("Repositories"))
+{
+    /// <summary>
+    /// @(table.Description) 仓储
+    /// </summary>
+    public class @(table.ConvertedName)Repository : RepositoryBase<@(table.ConvertedName)>, I@(table.ConvertedName)Repository
+    {
+        /// <summary>
+        /// 初始化一个<see cref="@(table.ConvertedName)Repository"/>类型的实例
+        /// </summary>
+        /// <param name="unitOfWork">工作单元</param>
+        public @(table.ConvertedName)Repository( I@(project.GetUnitOfWork()) unitOfWork ) : base( unitOfWork ) { }
+    }
+}

@@ -1,0 +1,16 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+@if (entity.IsTreeEntity())
+{
+    await Html.RenderPartialAsync("Crud/Tree/ITreeService.cshtml", Model);
+}
+else
+{
+    await Html.RenderPartialAsync("Crud/ICrudService.cshtml", Model);
+}

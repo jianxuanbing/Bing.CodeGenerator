@@ -1,0 +1,37 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Util.Ui.Controllers;
+using @(Model.GetServiceName("Dtos"));
+using @(Model.GetServiceName("Queries"));
+using @(Model.GetServiceName("Abstractions"));
+
+namespace @($"{project.Module}.Apis.{schema.Name}")
+{
+    /// <summary>
+    /// @entity.Description 控制器
+    /// </summary>
+    public class @(entity.ClassName)Controller : CrudControllerBase<@(entity.ClassName)Dto, @(entity.ClassName)Query>
+    {
+        /// <summary>
+        /// @(entity.Description)服务
+        /// </summary>
+        public I@(entity.ClassName)Service @(entity.ClassName)Service { get; }
+    
+        /// <summary>
+        /// 初始化一个<see cref="@(entity.ClassName)Controller"/>类型的实例
+        /// </summary>
+        /// <param name="service">@(entity.Description)服务</param>
+        public @(entity.ClassName)Controller( I@(entity.ClassName)Service service ) : base( service ) 
+        {
+            @(entity.ClassName)Service = service;
+        }
+    }
+}

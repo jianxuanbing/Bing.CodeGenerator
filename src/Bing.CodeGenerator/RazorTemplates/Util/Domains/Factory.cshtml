@@ -1,0 +1,46 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using System;
+using @(Model.GetDomainName("Models"));
+
+namespace @(Model.GetDomainName("Factories"))
+{
+    /// <summary>
+    /// @(entity.Description)工厂
+    /// </summary>
+    public partial class @(entity.ClassName)Factory
+    {
+        /// <summary>
+        /// 创建@(entity.Description)
+        /// </summary>
+@foreach (var property in entity.Properties)
+{
+        @:/// <param name="@property.PropertyName.ToSafeName().ToCamelCase()">@property.Description</param>
+}
+        public static @entity.ClassName Create(
+@foreach (var property in entity.Properties)
+{
+            @:@property.TypeName @property.PropertyName.ToSafeName().ToCamelCase()@entity.GetComma(property,false)
+}
+        )
+        {
+            @entity.ClassName result;
+@foreach (var property in entity.Properties)
+{
+    if (property.IsPrimaryKey.HasValue && property.IsPrimaryKey.Value)
+    {
+            @:result = new @(entity.ClassName)( @property.PropertyName.ToSafeName().ToCamelCase() );
+        continue;
+    }
+            @:result.@property.PropertyName.ToSafeName() = @property.PropertyName.ToSafeName().ToCamelCase();
+}
+            return result;
+        }
+    }
+}

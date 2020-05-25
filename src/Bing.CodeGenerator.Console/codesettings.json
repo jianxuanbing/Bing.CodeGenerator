@@ -1,4 +1,5 @@
 ﻿{
+  "TargetFramework": "Util",
   "CodeGenDict": {
     "erp": {
       "SlnName": "Utopa.Erp",

@@ -1,0 +1,68 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using Util;
+using Util.Maps;
+using @(Model.GetDomainName("Models"));
+
+namespace @(Model.GetServiceName("Dtos","Extensions"))
+{
+    /// <summary>
+    /// @entity.Description 数据传输对象扩展
+    /// </summary>
+    public static class @(entity.ClassName)DtoExtension
+    {
+        /// <summary>
+        /// 转换为@(entity.Description)实体
+        /// </summary>
+        /// <param name="dto">@(entity.Description)数据传输对象</param>
+        public static @(entity.ClassName) ToEntity( this @(entity.ClassName)Dto dto )
+        {
+            if( dto == null)
+                return new @(entity.ClassName)();
+            return new @(entity.ClassName)( dto.Id@(entity.GetToEntityConvert()) )
+            {
+@foreach (var property in entity.Properties)
+{
+    if (property.IsPrimaryKey.SafeValue())
+    {
+        continue;
+    }
+    if (property.DataType == DbType.Boolean)
+    {
+                @:@property.PropertyName.ToSafeName() = dto.@(property.PropertyName.ToSafeName()).SafeValue();
+        continue;
+    }
+                @:@property.PropertyName.ToSafeName() = dto.@(property.PropertyName.ToSafeName()),
+}
+            };
+        }
+
+        /// <summary>
+        /// 转换为@(entity.Description)数据传输对象
+        /// </summary>
+        /// <param name="entity">@(entity.Description)实体</param>
+        public static @(entity.ClassName)Dto ToDto( this @(entity.ClassName) entity )
+        {
+            if( entity == null)
+                return new @(entity.ClassName)Dto();
+            return new @(entity.ClassName)Dto
+            {
+@foreach (var property in entity.Properties)
+{
+    if (property.IsPrimaryKey.SafeValue())
+    {
+                @:Id = entity.Id@(entity.GetToDtoConvert()),
+        continue;
+    }
+                @:@property.PropertyName.ToSafeName() = entity.@(property.PropertyName.ToSafeName()),
+}
+            };
+        }
+    }
+}

@@ -1,0 +1,20 @@
+﻿@using SmartCode
+@using SmartCode.Generator.Extensions
+@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+
+namespace @(Model.GetDomainName("Models"))
+{
+    /// <summary>
+    /// @entity.Description
+    /// </summary>
+    public partial class @entity.ClassName
+    {
+    }
+}

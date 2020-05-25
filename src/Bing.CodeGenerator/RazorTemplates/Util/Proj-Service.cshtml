@@ -1,0 +1,19 @@
+﻿@model BuildContext
+@{ 
+    var project = Model.Project;
+}
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>@(project.Module).Service</AssemblyName>
+        <RootNamespace>@(project.Module).Service</RootNamespace>
+        <LangVersion>7.3</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.0\@(project.Module).Service.xml</DocumentationFile>
+        <NoWarn>1701;1702</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\@(project.Module).Data\@(project.Module).Data.csproj" />
+    </ItemGroup>
+</Project>
