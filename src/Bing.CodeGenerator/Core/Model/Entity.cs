@@ -244,7 +244,7 @@ namespace Bing.CodeGenerator.Core
         public string GetInterfaces()
         {
             var result = new StringBuilder();
-            result.Append(GetITenant());
+            //result.Append(GetITenant()); // TODO: 注释租户，目前暂时未使用
             result.Append(GetISoftDelete());
             result.Append(GetIAudited());
             return result.ToString();
@@ -253,7 +253,7 @@ namespace Bing.CodeGenerator.Core
         /// <summary>
         /// 获取租户接口
         /// </summary>
-        private string GetITenant() => AnyColumn(Const.TenantId) ? ",ITenant" : string.Empty;
+        private string GetITenant() => AnyColumn(Const.TenantId) ? ", ITenant" : string.Empty;
 
         /// <summary>
         /// 是否存在指定列
@@ -271,7 +271,7 @@ namespace Bing.CodeGenerator.Core
         /// <summary>
         /// 获取逻辑删除接口
         /// </summary>
-        private string GetISoftDelete() => AnyColumn(Const.IsDeleted) ? ",IDelete" : string.Empty;
+        private string GetISoftDelete() => AnyColumn(Const.IsDeleted) ? ", ISoftDelete" : string.Empty;
 
         /// <summary>
         /// 获取审计接口
@@ -279,17 +279,17 @@ namespace Bing.CodeGenerator.Core
         private string GetIAudited()
         {
             if (IsCreatorAudited() && IsModifierAudited())
-                return ",IAuditedWithNameObject";
+                return ", IAuditedWithNameObject";
             if (IsCreationAudited() && IsModificationAudited())
-                return ",IAuditedObject";
+                return ", IAuditedObject";
             if (IsCreatorAudited())
-                return ",ICreationAuditedWithNameObject";
+                return ", ICreationAuditedWithNameObject";
             if (IsCreationAudited())
-                return ",ICreationAuditedObject";
+                return ", ICreationAuditedObject";
             if (IsModifierAudited())
-                return ",IModificationAuditedWithNameObject";
+                return ", IModificationAuditedWithNameObject";
             if (IsModificationAudited())
-                return ",IModificationAuditedObject";
+                return ", IModificationAuditedObject";
             return string.Empty;
         }
 

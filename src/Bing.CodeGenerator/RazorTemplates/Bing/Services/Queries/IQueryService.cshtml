@@ -6,14 +6,14 @@
     var table = Model.GetCurrentTable();
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
-using Bing.Applications;
+using Bing.Application.Services;
 
 namespace @(Model.GetServiceName("Abstractions"))
 {
     /// <summary>
     /// @entity.Description 查询服务
     /// </summary>
-    public interface IQuery@(entity.ClassName)Service : IService
+    public interface IQuery@(entity.ClassName)Service : IAppService
     {
     }
 }

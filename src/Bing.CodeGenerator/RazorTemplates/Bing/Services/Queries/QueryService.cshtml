@@ -6,8 +6,8 @@
     var table = Model.GetCurrentTable();
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
-using Bing.Applications;
-using Bing.Datas.Sql;
+using Bing.Application.Services;
+using Bing.Data.Sql;
 using @(Model.GetDomainName("Repositories"));
 using @(Model.GetServiceName("Abstractions"));
 
@@ -16,7 +16,7 @@ namespace @(Model.GetServiceName("Implements"))
     /// <summary>
     /// @entity.Description 查询服务
     /// </summary>
-    public class Query@(entity.ClassName)Service : ServiceBase, IQuery@(entity.ClassName)Service
+    public class Query@(entity.ClassName)Service : AppServiceBase, IQuery@(entity.ClassName)Service
     {
         /// <summary>
         /// Sql查询对象

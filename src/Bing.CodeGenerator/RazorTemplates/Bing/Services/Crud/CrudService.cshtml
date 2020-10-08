@@ -6,7 +6,8 @@
     var table = Model.GetCurrentTable();
     var entity = Model.GetEntityContext().FindEntity(schema, table);
 }
-using Bing.Applications;
+using Bing.Application.Services;
+using Bing.Data.Queries;
 using @(Model.GetServiceName("Dtos"));
 using @(Model.GetServiceName("Queries"));
 using @(Model.GetServiceName("Abstractions"));
@@ -16,7 +17,7 @@ namespace @(Model.GetServiceName("Implements"))
     /// <summary>
     /// @entity.Description 服务
     /// </summary>
-    public class @(entity.ClassName)Service : CrudServiceBase<@(entity.ClassName), @(entity.ClassName)Dto, @(entity.ClassName)Query@(entity.GetKeyTypeNoContainsGuid())>, I@(entity.ClassName)Service
+    public class @(entity.ClassName)Service : CrudAppServiceBase<@(entity.ClassName), @(entity.ClassName)Dto, @(entity.ClassName)Query@(entity.GetKeyTypeNoContainsGuid())>, I@(entity.ClassName)Service
     {
         /// <summary>
         /// @(entity.Description)仓储
