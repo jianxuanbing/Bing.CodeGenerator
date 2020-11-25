@@ -177,6 +177,12 @@
     <None Update="RazorTemplates\Bing\_ViewImports.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="RazorTemplates\FreeSQLModel\Domains\Entity.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RazorTemplates\FreeSQLModel\_ViewImports.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="RazorTemplates\Util\Datas\IUnitOfWork.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

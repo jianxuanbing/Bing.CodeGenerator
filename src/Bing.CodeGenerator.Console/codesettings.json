@@ -1,5 +1,5 @@
 ﻿{
-  "TargetFramework": "Util",
+  "TargetFramework": "FreeSqlModel",
   "CodeGenDict": {
     "erp": {
       "SlnName": "Utopa.Erp",

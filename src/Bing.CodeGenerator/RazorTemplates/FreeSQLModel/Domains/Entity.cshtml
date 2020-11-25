@@ -1,0 +1,46 @@
+﻿@model BuildContext
+@{
+    var project = Model.Project;
+    var buildTask = Model.Build;
+    var schema = Model.GetCurrentSchema();
+    var table = Model.GetCurrentTable();
+    var entity = Model.GetEntityContext().FindEntity(schema, table);
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using FreeSql.DatabaseModel;
+using FreeSql.DataAnnotations;
+
+
+namespace @(Model.GetDomainName("Models"))
+{
+    /// <summary>
+    /// @entity.Description
+    /// </summary>
+    [Display(Name = "@entity.Description")]
+    [Table(Name = "`@entity.FullName`")]
+    public partial class @entity.ClassName
+    {
+@foreach (var property in entity.Properties)
+{
+    <text>
+        /// <summary>
+        /// @property.Description
+        /// </summary>
+    @if (property.IsPrimaryKey.SafeValue())
+    {
+        @:[Column(IsPrimary = true)]
+    }
+        [Display(Name = "@property.Description")]
+    @if (property.HasValidate())
+    {
+        @:@property.Validate()
+    }
+        public @property.TypeName @property.PropertyName { get; set; }
+    </text>
+}
+
+    }
+}

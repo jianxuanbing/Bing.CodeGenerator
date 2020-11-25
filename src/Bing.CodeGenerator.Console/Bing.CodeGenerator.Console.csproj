@@ -28,6 +28,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="FreeSqlModelCodeGenerateConfig.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="UtilCodeGenerateConfig.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

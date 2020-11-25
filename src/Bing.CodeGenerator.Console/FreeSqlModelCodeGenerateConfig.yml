@@ -1,0 +1,52 @@
+﻿Module: Utopa.Erp
+Author: jian玄冰
+DataSource:
+  Name: DbTableSchema
+  Parameters:
+    DbName: Erp
+    DbProvider: SqlServer
+    ConnectionString: Data Source=;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;
+Language: CSharp
+TemplateEngine:
+  Name: RazorTest
+  Root: FreeSQLModel
+  Path: G:\Git\SmartCode\Bing.GenerateDemo\bin\Debug\netcoreapp2.2\RazorTemplates
+Output:
+  Type: File
+  Path: 'D:\demo\generate'
+
+NamingConverter:
+  Table:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+  View:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+  Column:
+    Tokenizer:
+      Type: Default
+    Converter:
+      Type: Default
+# 构建任务
+Build:
+  # 清空目录
+  ClearDir:
+    Type: Clear
+    Parameters:
+      Dirs: '.'
+
+  
+  # 实体生成
+  Entity:
+    Type: SchemaTable
+    Module: Models
+    TemplateEngine:
+      Path: Domains/Entity.cshtml
+    Output:
+      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Name: '{{Items.CurrentTable.ConvertedName}}'
+      Extension: '.cs'
