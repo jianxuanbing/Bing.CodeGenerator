@@ -271,7 +271,7 @@ namespace Bing.CodeGenerator.Core
         /// <summary>
         /// 获取逻辑删除接口
         /// </summary>
-        private string GetISoftDelete() => AnyColumn(Const.IsDeleted) ? ", ISoftDelete" : string.Empty;
+        public string GetISoftDelete() => AnyColumn(Const.IsDeleted) ? ", ISoftDelete" : string.Empty;
 
         /// <summary>
         /// 获取审计接口

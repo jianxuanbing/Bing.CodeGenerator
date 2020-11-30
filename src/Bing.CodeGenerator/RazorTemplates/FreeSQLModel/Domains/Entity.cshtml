@@ -14,14 +14,14 @@ using FreeSql.DatabaseModel;
 using FreeSql.DataAnnotations;
 
 
-namespace @(Model.GetDomainName("Models"))
+namespace @($"{project.Module}.Domain.Models.{schema.Name}")
 {
     /// <summary>
     /// @entity.Description
     /// </summary>
     [Display(Name = "@entity.Description")]
     [Table(Name = "`@entity.FullName`")]
-    public partial class @entity.ClassName
+    public partial class @entity.ClassName@(string.IsNullOrWhiteSpace(entity.GetISoftDelete())?string.Empty:": ISoftDelete")
     {
 @foreach (var property in entity.Properties)
 {

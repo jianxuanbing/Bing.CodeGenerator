@@ -47,6 +47,6 @@ Build:
     TemplateEngine:
       Path: Domains/Entity.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Path: 'Domains/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
       Name: '{{Items.CurrentTable.ConvertedName}}'
       Extension: '.cs'
