@@ -279,15 +279,15 @@ namespace Bing.CodeGenerator.Core
         private string GetIAudited()
         {
             if (IsCreatorAudited() && IsModifierAudited())
-                return ", IAuditedWithNameObject";
+                return ", IAuditedObjectWithName";
             if (IsCreationAudited() && IsModificationAudited())
                 return ", IAuditedObject";
             if (IsCreatorAudited())
-                return ", ICreationAuditedWithNameObject";
+                return ", ICreationAuditedObjectWithName";
             if (IsCreationAudited())
                 return ", ICreationAuditedObject";
             if (IsModifierAudited())
-                return ", IModificationAuditedWithNameObject";
+                return ", IModificationAuditedObjectWithName";
             if (IsModificationAudited())
                 return ", IModificationAuditedObject";
             return string.Empty;
