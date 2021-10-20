@@ -58,7 +58,11 @@ namespace Bing.CodeGenerator.Extensions
         /// 获取领域名称
         /// </summary>
         /// <param name="context">构建上下文</param>
-        public static string GetDomainName(this BuildContext context) => $"{context.Project.Module}.{context.GetCurrentSchema().Name}.Domain";
+        public static string GetDomainName(this BuildContext context)
+        {
+            var schema = context.GetCurrentSchema();
+            return schema.IsDefault ? $"{context.Project.Module}.Domain" : $"{context.Project.Module}.{schema.Name}.Domain";
+        }
 
         /// <summary>
         /// 获取领域名称
@@ -86,7 +90,11 @@ namespace Bing.CodeGenerator.Extensions
         /// </summary>
         /// <param name="context">构建上下文</param>
         /// <param name="module">模块</param>
-        public static string GetDataName(this BuildContext context, string module) => $"{context.GetDataName()}.{module}.{context.GetCurrentSchema().Name}";
+        public static string GetDataName(this BuildContext context, string module)
+        {
+            var schema = context.GetCurrentSchema();
+            return schema.IsDefault ? $"{context.GetDataName()}.{module}" : $"{context.GetDataName()}.{module}.{schema.Name}";
+        }
 
         /// <summary>
         /// 获取数据名称
@@ -107,7 +115,11 @@ namespace Bing.CodeGenerator.Extensions
         /// </summary>
         /// <param name="context">构建上下文</param>
         /// <param name="module">模块</param>
-        public static string GetServiceName(this BuildContext context, string module) => $"{context.GetServiceName()}.{module}.{context.GetCurrentSchema().Name}";
+        public static string GetServiceName(this BuildContext context, string module)
+        {
+            var schema = context.GetCurrentSchema();
+            return schema.IsDefault ? $"{context.GetServiceName()}.{module}" : $"{context.GetServiceName()}.{module}.{schema.Name}";
+        }
 
         /// <summary>
         /// 获取服务名称
@@ -116,6 +128,17 @@ namespace Bing.CodeGenerator.Extensions
         /// <param name="module">模块</param>
         /// <param name="suffix">后缀</param>
         public static string GetServiceName(this BuildContext context, string module, string suffix) => $"{context.GetServiceName(module)}.{suffix}";
+
+        /// <summary>
+        /// 获取API名称
+        /// </summary>
+        /// <param name="context">构建上下文</param>
+        /// <param name="module">模块</param>
+        public static string GetApiName(this BuildContext context, string module)
+        {
+            var schema = context.GetCurrentSchema();
+            return schema.IsDefault ? $"{module}.Apis" : $"{module}.Apis.{schema.Name}";
+        }
 
         /// <summary>
         /// 获取实体上下文

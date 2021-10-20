@@ -32,5 +32,10 @@ namespace Bing.CodeGenerator.Entity
         /// 表集合
         /// </summary>
         public IEnumerable<Table> Tables { get; set; }
+
+        /// <summary>
+        /// 是否默认
+        /// </summary>
+        public bool IsDefault => Name == "dbo";
     }
 }

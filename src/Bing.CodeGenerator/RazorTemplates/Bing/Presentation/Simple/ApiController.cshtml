@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Bing.AspNetCore.Mvc;
 using @(Model.GetServiceName("Abstractions"));
 
-namespace @($"{project.Module}.Apis.{schema.Name}")
+namespace @(Model.GetApiName(project.Module))
 {
     /// <summary>
     /// @entity.Description 控制器

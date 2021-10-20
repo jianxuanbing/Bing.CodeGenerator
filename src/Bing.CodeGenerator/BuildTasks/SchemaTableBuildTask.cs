@@ -42,8 +42,8 @@ namespace Bing.CodeGenerator.BuildTasks
             var schemas = context.GetCurrentAllSchema();
             foreach (var schema in schemas)
             {
-                if (schema.Name == "dbo")
-                    continue;
+                //if (schema.Name == "dbo")
+                //    continue;
                 _logger.LogInformation($"BuildSchema:{schema.Name} Start!");
                 context.SetCurrentSchema(schema);
                 foreach (var table in schema.Tables)

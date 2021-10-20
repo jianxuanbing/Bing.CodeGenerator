@@ -13,7 +13,7 @@ using @(Model.GetServiceName("Dtos"));
 using @(Model.GetServiceName("Queries"));
 using @(Model.GetServiceName("Abstractions"));
 
-namespace @($"{project.Module}.Apis.{schema.Name}")
+namespace @(Model.GetApiName(project.Module))
 {
     /// <summary>
     /// @entity.Description 控制器
