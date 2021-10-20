@@ -29,34 +29,34 @@
     }
 }
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\..\common.props" />
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>@GetModuleName()</AssemblyName>
         <RootNamespace>@GetModuleName()</RootNamespace>
-        <LangVersion>7.3</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-    @if (!schemas.Any())
-    {
-        <ProjectReference Include="..\@GetDomainName()\@(GetDomainName()).csproj" />
-    }
-    else
-    {
-        @foreach(var schema in schemas)
+        @if (!schemas.Any())
         {
-            if (schema.Name.ToLower() == "dbo" && !schema.Tables.Any())
+            <ProjectReference Include="..\@GetDomainName()\@(GetDomainName()).csproj"/>
+        }
+        else
+        {
+            @foreach (var schema in schemas)
             {
-                continue;
-            }
-            if (schema.Name.ToLower() == "dbo" && schema.Tables.Any())
-            {
-        <ProjectReference Include="..\@GetDomainName()\@(GetDomainName()).csproj" />
-            }
-            else
-            {
-        <ProjectReference Include="..\@GetDomainName(schema.Name)\@(GetDomainName(schema.Name)).csproj" />
+                if (schema.Name.ToLower() == "dbo" && !schema.Tables.Any())
+                {
+                    continue;
+                }
+                if (schema.Name.ToLower() == "dbo" && schema.Tables.Any())
+                {
+                    <ProjectReference Include="..\@GetDomainName()\@(GetDomainName()).csproj"/>
+                }
+                else
+                {
+                    <ProjectReference Include="..\@GetDomainName(schema.Name)\@(GetDomainName(schema.Name)).csproj"/>
+                }
             }
         }
-    }
     </ItemGroup>
 </Project>

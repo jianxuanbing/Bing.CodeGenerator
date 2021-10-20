@@ -47,8 +47,10 @@ Build:
       Path: '.'
     Parameters:
       Templates: [{Key: 'Sln.cshtml', Output: { Name: '{{Project.Module}}', Extension: '.sln'}}, 
+      {Key: 'Sln-Common.cshtml', Output: { Path: 'build', Name: 'version', Extension: '.props'}},
       {Key: 'Sln-Directory.Build.cshtml', Output: { Name: 'Directory.Build', Extension: '.props'}}, 
       {Key: 'Sln-Version.cshtml', Output: { Path: 'build', Name: 'version', Extension: '.props'}},
+      {Key: 'Sln-Version.Dev.cshtml', Output: { Path: 'build', Name: 'version.dev', Extension: '.props'}},
       {Key: 'Sln-Dockerfile.cshtml', Output: { Name: 'Dockerfile', Extension: ''}}, 
       {Key: 'Sln-DockerIgnore.cshtml', Output: { Name: '.dockerignore', Extension: ''}}, 
       {Key: 'Sln-GitIgnore.cshtml', Output: { Name: '.gitignore', Extension: ''}}, 
@@ -78,7 +80,7 @@ Build:
     TemplateEngine:
       Path: Domains/IRepository.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Path}}.Domain/{{Build.Module}}'
       Name: 'I{{Items.CurrentTable.ConvertedName}}Repository'
       Extension: '.cs'
   RepositoryImpl:
@@ -87,7 +89,7 @@ Build:
     TemplateEngine:
       Path: Datas/Repository.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Repository'
       Extension: '.cs'
   # 实体生成
@@ -97,7 +99,7 @@ Build:
     TemplateEngine:
       Path: Domains/Entity.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Path}}.Domain/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}'
       Extension: '.cs'
   EntityBase:
@@ -106,7 +108,7 @@ Build:
     TemplateEngine:
       Path: Domains/Entity.Common.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Path}}.Domain/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}.Base'
       Extension: '.cs'
   # 工厂生成
@@ -116,7 +118,7 @@ Build:
     TemplateEngine:
       Path: Domains/Factory.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Name}}.Domain/{{Build.Module}}'
+      Path: 'src/{{Project.Module}}.{{Items.CurrentSchema.Path}}.Domain/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Factory'
       Extension: '.cs'
   # 映射生成
@@ -126,7 +128,7 @@ Build:
     TemplateEngine:
       Path: Datas/MySql/Mapping.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/MySql'
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Path}}/MySql'
       Name: '{{Items.CurrentTable.ConvertedName}}Map'
       Extension: '.cs'
   PgSqlMapping:
@@ -135,7 +137,7 @@ Build:
     TemplateEngine:
       Path: Datas/PgSql/Mapping.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/PgSql'
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Path}}/PgSql'
       Name: '{{Items.CurrentTable.ConvertedName}}Map'
       Extension: '.cs'
   SqlServerMapping:
@@ -144,7 +146,7 @@ Build:
     TemplateEngine:
       Path: Datas/SqlServer/Mapping.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Name}}/SqlServer'
+      Path: 'src/{{Project.Module}}.Data/{{Build.Module}}/{{Items.CurrentSchema.Path}}/SqlServer'
       Name: '{{Items.CurrentTable.ConvertedName}}Map'
       Extension: '.cs'
   # 数据传输对象生成
@@ -154,7 +156,7 @@ Build:
     TemplateEngine:
       Path: Services/Dto.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Dto'
       Extension: '.cs'
   DtoExtensions:
@@ -163,7 +165,7 @@ Build:
     TemplateEngine:
       Path: Services/DtoExtensions.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Service/Dtos/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Path: 'src/{{Project.Module}}.Service/Dtos/{{Items.CurrentSchema.Path}}/{{Build.Module}}'
       Name: 'Extensions.{{Items.CurrentTable.ConvertedName}}'
       Extension: '.cs'
   Query:
@@ -172,7 +174,7 @@ Build:
     TemplateEngine:
       Path: Services/Query.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Query'
       Extension: '.cs'
   # 服务生成
@@ -182,7 +184,7 @@ Build:
     TemplateEngine:
       Path: Services/IService.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: 'I{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
   ServiceImpl:
@@ -191,7 +193,7 @@ Build:
     TemplateEngine:
       Path: Services/Service.cshtml
     Output:
-      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'src/{{Project.Module}}.Service/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
 # 表现层生成
@@ -201,6 +203,6 @@ Build:
     TemplateEngine:
       Path: Presentation/ApiController.cshtml
     Output:
-      Path: 'src/{{Project.Module}}/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'src/{{Project.Module}}/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Controller'
       Extension: '.cs'

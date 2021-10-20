@@ -15,10 +15,9 @@
 }
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>@GetDomainName()</AssemblyName>
         <RootNamespace>@GetDomainName()</RootNamespace>
-        <LangVersion>7.3</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\@(Model.Project.Module).Infrastructure\@(Model.Project.Module).Infrastructure.csproj" />

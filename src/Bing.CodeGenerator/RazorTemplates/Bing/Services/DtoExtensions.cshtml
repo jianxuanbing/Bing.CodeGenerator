@@ -35,7 +35,7 @@ namespace @(Model.GetServiceName("Dtos","Extensions"))
     }
     if (property.DataType == DbType.Boolean)
     {
-                @:@property.PropertyName.ToSafeName() = dto.@(property.PropertyName.ToSafeName()).SafeValue();
+                @:@property.PropertyName.ToSafeName() = dto.@(property.PropertyName.ToSafeName()).SafeValue(),
         continue;
     }
                 @:@property.PropertyName.ToSafeName() = dto.@(property.PropertyName.ToSafeName()),

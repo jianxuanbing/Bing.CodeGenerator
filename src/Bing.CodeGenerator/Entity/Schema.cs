@@ -37,5 +37,10 @@ namespace Bing.CodeGenerator.Entity
         /// 是否默认
         /// </summary>
         public bool IsDefault => Name == "dbo";
+
+        /// <summary>
+        /// 路径
+        /// </summary>
+        public string Path => IsDefault ? "" : $"{Name}/";
     }
 }

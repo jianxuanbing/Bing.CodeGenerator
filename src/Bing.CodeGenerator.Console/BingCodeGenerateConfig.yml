@@ -59,7 +59,7 @@ Build:
     TemplateEngine:
       Path: Domains/ItemGroup.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}'
+      Path: 'Domains/{{Items.CurrentSchema.Path}}'
       Name: 'ItemGroup'
       Extension: '.txt'
   
@@ -70,7 +70,7 @@ Build:
     TemplateEngine:
       Path: Domains/IRepository.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Path: 'Domains/{{Items.CurrentSchema.Path}}/{{Build.Module}}'
       Name: 'I{{Items.CurrentTable.ConvertedName}}Repository'
       Extension: '.cs'
   RepositoryImpl:
@@ -79,7 +79,7 @@ Build:
     TemplateEngine:
       Path: Datas/Repository.cshtml
     Output:
-      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Repository'
       Extension: '.cs'
   
@@ -90,7 +90,7 @@ Build:
     TemplateEngine:
       Path: Domains/Entity.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Path: 'Domains/{{Items.CurrentSchema.Path}}/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}'
       Extension: '.cs'
   EntityBase:
@@ -99,7 +99,7 @@ Build:
     TemplateEngine:
       Path: Domains/Entity.Common.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Path: 'Domains/{{Items.CurrentSchema.Path}}/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}.Base'
       Extension: '.cs'
   
@@ -110,7 +110,7 @@ Build:
     TemplateEngine:
       Path: Domains/Factory.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Path: 'Domains/{{Items.CurrentSchema.Path}}/{{Build.Module}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Factory'
       Extension: '.cs'
   
@@ -121,7 +121,7 @@ Build:
     TemplateEngine:
       Path: Domains/IDomainService.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}/Abstractions'
+      Path: 'Domains/{{Items.CurrentSchema.Path}}/{{Build.Module}}/Abstractions'
       Name: 'I{{Items.CurrentTable.ConvertedName}}Manager'
       Extension: '.cs'
   DomainServiceImpl:
@@ -130,7 +130,7 @@ Build:
     TemplateEngine:
       Path: Domains/DomainService.cshtml
     Output:
-      Path: 'Domains/{{Items.CurrentSchema.Name}}/{{Build.Module}}/Implements'
+      Path: 'Domains/{{Items.CurrentSchema.Path}}/{{Build.Module}}/Implements'
       Name: '{{Items.CurrentTable.ConvertedName}}Manager'
       Extension: '.cs'
   
@@ -141,7 +141,7 @@ Build:
     TemplateEngine:
       Path: Datas/MySql/Mapping.cshtml
     Output:
-      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Name}}/MySql'
+      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Path}}/MySql'
       Name: '{{Items.CurrentTable.ConvertedName}}Map'
       Extension: '.cs'
   PgSqlMapping:
@@ -150,7 +150,7 @@ Build:
     TemplateEngine:
       Path: Datas/PgSql/Mapping.cshtml
     Output:
-      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Name}}/PgSql'
+      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Path}}/PgSql'
       Name: '{{Items.CurrentTable.ConvertedName}}Map'
       Extension: '.cs'
   SqlServerMapping:
@@ -159,7 +159,7 @@ Build:
     TemplateEngine:
       Path: Datas/SqlServer/Mapping.cshtml
     Output:
-      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Name}}/SqlServer'
+      Path: 'Datas/{{Build.Module}}/{{Items.CurrentSchema.Path}}/SqlServer'
       Name: '{{Items.CurrentTable.ConvertedName}}Map'
       Extension: '.cs'
   
@@ -170,7 +170,7 @@ Build:
     TemplateEngine:
       Path: Services/Dto.cshtml
     Output:
-      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Dto'
       Extension: '.cs'
   DtoExtensions:
@@ -179,7 +179,7 @@ Build:
     TemplateEngine:
       Path: Services/DtoExtensions.cshtml
     Output:
-      Path: 'Services/Dtos/{{Items.CurrentSchema.Name}}/{{Build.Module}}'
+      Path: 'Services/Dtos/{{Items.CurrentSchema.Path}}/{{Build.Module}}'
       Name: 'Extensions.{{Items.CurrentTable.ConvertedName}}'
       Extension: '.cs'
   Query:
@@ -188,7 +188,7 @@ Build:
     TemplateEngine:
       Path: Services/Query.cshtml
     Output:
-      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Query'
       Extension: '.cs'
   
@@ -199,7 +199,7 @@ Build:
     TemplateEngine:
       Path: Services/IService.cshtml
     Output:
-      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: 'I{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
   ServiceImpl:
@@ -208,7 +208,7 @@ Build:
     TemplateEngine:
       Path: Services/Service.cshtml
     Output:
-      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
   SimpleServiceInterface:
@@ -217,7 +217,7 @@ Build:
     TemplateEngine:
       Path: Services/Simple/IService.cshtml
     Output:
-      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: 'I{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
   SimpleServiceImpl:
@@ -226,7 +226,7 @@ Build:
     TemplateEngine:
       Path: Services/Simple/Service.cshtml
     Output:
-      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
   SimpleQueryServiceInterface:
@@ -235,7 +235,7 @@ Build:
     TemplateEngine:
       Path: Services/Queries/IQueryService.cshtml
     Output:
-      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: 'IQuery{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
   SimpleQueryServiceImpl:
@@ -244,7 +244,7 @@ Build:
     TemplateEngine:
       Path: Services/Queries/QueryService.cshtml
     Output:
-      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Services_Simple/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: 'Query{{Items.CurrentTable.ConvertedName}}Service'
       Extension: '.cs'
 
@@ -255,7 +255,7 @@ Build:
     TemplateEngine:
       Path: Presentation/ApiController.cshtml
     Output:
-      Path: 'Presentation/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Presentation/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Controller'
       Extension: '.cs'
   SimpleApiController:
@@ -264,6 +264,6 @@ Build:
     TemplateEngine:
       Path: Presentation/Simple/ApiController.cshtml
     Output:
-      Path: 'Presentation_Simple/{{Build.Module}}/{{Items.CurrentSchema.Name}}'
+      Path: 'Presentation_Simple/{{Build.Module}}/{{Items.CurrentSchema.Path}}'
       Name: '{{Items.CurrentTable.ConvertedName}}Controller'
       Extension: '.cs'
