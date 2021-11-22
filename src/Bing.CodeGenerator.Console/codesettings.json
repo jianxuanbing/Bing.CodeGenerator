@@ -5,7 +5,7 @@
       "SlnName": "Utopa.Erp",
       "DbName": "Erp",
       "DbProvider": "SqlServer",
-      "DbConnectionString": "Data Source=;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;",
+      "DbConnectionString": "Data Source=10.186.132.21,21433;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_erp",
       "UnitOfWorkName": "Erp"
     },
@@ -24,6 +24,14 @@
       "DbConnectionString": "Data Source=;Initial Catalog=Tms;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_tms",
       "UnitOfWorkName": "Tms"
+    },
+    "tms_mini": {
+      "SlnName": "Utopa.Tms.Mini",
+      "DbName": "Tms_Mini",
+      "DbProvider": "SqlServer",
+      "DbConnectionString": "Data Source=10.186.132.21,21433;Initial Catalog=Tms_Mini;User Id=sa;Password=Bing2019.00;",
+      "OutputPath": "D:\\demo\\generate_tms_mini",
+      "UnitOfWorkName": "TmsMini"
     }
   }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SmartCode.App;
@@ -24,9 +25,9 @@ namespace Bing.CodeGenerator.Console
         private const string CodeGenKey = "CodeGenDict";
 
         /// <summary>
-        /// 目标框架
+        /// 模板字典
         /// </summary>
-        private const string TargetFramework = "TargetFramework";
+        private static IDictionary<int, string> TemplateDict = new Dictionary<int, string>();
 
         /// <summary>
         /// 主函数
@@ -37,14 +38,16 @@ namespace Bing.CodeGenerator.Console
             {
                 arg.Cancel = true;
             };
-            
-            var result = GetCodeGenOptions();
-            System.Console.WriteLine($"欢迎使用{result.Target}代码生成功能器");
-            var slnName = InputSlnName(result.Options);
+
+            var templateIndex = Convert.ToInt32(InputTemplate());
+            var target = TemplateDict[templateIndex];
+            var options = GetCodeGenOptions();
+            System.Console.WriteLine($"欢迎使用{target}代码生成功能器");
+            var slnName = InputSlnName(options);
             System.Console.WriteLine($"解决方案: {slnName}");
-            var slnType = InputSlnType(result.Options);
+            var slnType = InputSlnType(options);
             System.Console.WriteLine($"生成代码方式: {slnType}");
-            var app = GetSmartCodeApp(slnType, result.Options[slnName], result.Target);
+            var app = GetSmartCodeApp(slnType, options[slnName], target);
             System.Console.WriteLine("-----------------------------开始生成代码-----------------------------");
             await app.Run();
             System.Console.WriteLine("-----------------------------结束生成代码-----------------------------");
@@ -54,7 +57,7 @@ namespace Bing.CodeGenerator.Console
         /// <summary>
         /// 获取代码配置
         /// </summary>
-        private static (CodeGenOptions Options,string Target) GetCodeGenOptions()
+        private static CodeGenOptions GetCodeGenOptions()
         {
             var basePath = Directory.GetCurrentDirectory();
             System.Console.WriteLine($"读取配置文件路径: {basePath}");
@@ -65,8 +68,46 @@ namespace Bing.CodeGenerator.Console
                 .AddJsonFile(CodeSettingsPath, false, true);
             var configuration = codeSettingsBuilder.Build();
             var codeGenOptions = configuration.GetSection(CodeGenKey).Get<CodeGenOptions>();
-            var target = configuration.GetSection(TargetFramework).Get<string>() ?? "Bing";
-            return (codeGenOptions, target);
+            return codeGenOptions;
+        }
+
+        /// <summary>
+        /// 输入模板
+        /// </summary>
+        private static string InputTemplate()
+        {
+            OutputTemplateList();
+            var result= System.Console.ReadLine()?.Trim();
+            if (string.IsNullOrEmpty(result))
+            {
+                System.Console.WriteLine("不能输入空模板，请重新输入模板索引!");
+                return InputTemplate();
+            }
+
+            if (!TemplateDict.ContainsKey(Convert.ToInt32(result)))
+            {
+                System.Console.WriteLine($"不存在该【{result}】方案，请重新输入代码方案!");
+                return InputTemplate();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 输出模板列表
+        /// </summary>
+        private static void OutputTemplateList()
+        {
+            System.Console.WriteLine("请选择生成代码模板(索引): ");
+            var dir = new DirectoryInfo($"{AppContext.BaseDirectory}/RazorTemplates");
+
+            var i = 1;
+            foreach (var dictionary in dir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
+            {
+                System.Console.WriteLine($"{i}. {dictionary.Name}");
+                TemplateDict[i] = dictionary.Name;
+                i++;
+            }
         }
 
         /// <summary>
