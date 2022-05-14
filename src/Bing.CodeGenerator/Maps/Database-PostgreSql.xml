@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMap Scope="Database-PostgreSql"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd">
+	<Statements>
+		<Statement Id="QuerySchema">
+			select
+			sch.schema_name as "Id",
+			sch.schema_name as "Name"
+			from
+			information_schema.schemata as sch
+			where
+			sch.schema_name not in ('pg_catalog', 'information_schema')
+			and sch.schema_name not like 'pg_toast%'
+			and sch.schema_name not like 'pg_temp%'
+		</Statement>
+		<Statement Id="QuerySchemaTable">
+			(
+			select
+			C.oid as "Id",
+			T.tablename as "Name",
+			T.schemaname as "SchemaId"
+			from
+			pg_tables as T
+			inner join pg_class as C on C.relname = T.tablename and C.relkind = 'r'
+			where
+			T.schemaname = @SchemaId
+			)
+			union all
+			(
+			select
+			C.oid as "Id",
+			V.viewname as "Name",
+			V.schemaname as "SchemaId"
+			from
+			pg_views as V
+			inner join pg_class as C on C.relname = V.viewname and C.relkind = 'v'
+			where
+			V.schemaname = @SchemaId
+			)
+		</Statement>
+		<Statement Id="QueryTable">
+			(
+			select
+			C.oid as "Id",
+			T.tablename as "Name",
+			'T' as "TypeName",
+			obj_description(C.oid) as "Description"
+			from
+			pg_tables as T
+			inner join pg_class as C on C.relname = T.tablename and C.relkind = 'r'
+			where
+			T.schemaname not in ('pg_catalog', 'information_schema')
+			and T.schemaname not like 'pg_toast%'
+			and T.schemaname not like 'pg_temp%'
+			)
+			union all
+			(
+			select
+			C.oid as "Id",
+			V.viewname as "Name",
+			'V' as "TypeName",
+			obj_description(C.oid) as "Description"
+			from
+			pg_views as V
+			inner join pg_class as C on C.relname = V.viewname and C.relkind = 'v'
+			where
+			V.schemaname not in ('pg_catalog', 'information_schema')
+			and V.schemaname not like 'pg_toast%'
+			and V.schemaname not like 'pg_temp%'
+			)
+
+		</Statement>
+		<Statement Id="QueryColumn">
+			select
+			A.attrelid as "TableId",
+			A.attname as "Name",
+			COL.udt_name as "DbType",
+			COALESCE(COL.character_maximum_length, COL.numeric_precision, -1) AS "DataLength",
+			COL.numeric_scale AS "Scale",
+			( CASE A.attnotnull WHEN 't' THEN 0 ELSE 1 END ) AS "IsNullable",
+			( CASE A.attnum WHEN CS.conkey[1] THEN 1 ELSE 0 END ) AS "IsPrimaryKey",
+			( CASE WHEN position( 'nextval' IN COL.column_default ) > 0 THEN 1 ELSE 0 END ) AS "AutoIncrement",
+			col_description( A.attrelid, A.attnum ) AS "Description"
+			from
+			pg_attribute as A
+			inner join pg_class as C on A.attrelid = C.oid
+			inner join pg_constraint as CS on CS.conrelid = C.oid AND cs.contype = 'p'
+			inner join pg_namespace as N on N.oid = C.relnamespace
+			inner join information_schema.columns as COL on COL.table_schema = N.nspname and COL.table_name = C.relname and COL.column_name = A.attname
+			where
+			A.attnum > 0
+			and COL.udt_name is not null
+			and A.attrelid = @TableId
+			order by
+			A.attnum asc
+		</Statement>
+	</Statements>
+</SmartSqlMap>

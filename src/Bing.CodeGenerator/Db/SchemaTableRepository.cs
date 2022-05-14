@@ -47,7 +47,7 @@ namespace Bing.CodeGenerator.Db
             try
             {
                 SqlMapper.SessionStore.Open();
-                schemas = await SqlMapper.QueryAsync<Schema>(new RequestContext()
+                schemas = await SqlMapper.QueryAsync<Schema>(new RequestContext
                 {
                     Scope = Scope,
                     SqlId = "QuerySchema",
@@ -55,9 +55,9 @@ namespace Bing.CodeGenerator.Db
                 });
                 foreach (var schema in schemas)
                 {
-                    if (!schema.Id.HasValue)
+                    if (string.IsNullOrWhiteSpace(schema.Id))
                         continue;
-                    schema.Tables = await HandleSchemaTableRelation(schema.Id.Value, tables);
+                    schema.Tables = await HandleSchemaTableRelation(schema.Id, tables);
                 }
             }
             finally
@@ -75,9 +75,9 @@ namespace Bing.CodeGenerator.Db
         /// </summary>
         /// <param name="schemaId">架构标识</param>
         /// <param name="sourceTables">原始表集合</param>
-        private async Task<IList<Table>> HandleSchemaTableRelation(int schemaId, IList<Table> sourceTables)
+        private async Task<IList<Table>> HandleSchemaTableRelation(string schemaId, IList<Table> sourceTables)
         {
-            var schemaTableRelations = await SqlMapper.QueryAsync<SchemaTable>(new RequestContext()
+            var schemaTableRelations = await SqlMapper.QueryAsync<SchemaTable>(new RequestContext
             {
                 Scope = Scope,
                 SqlId = "QuerySchemaTable",

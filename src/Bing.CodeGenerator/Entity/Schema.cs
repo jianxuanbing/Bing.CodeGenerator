@@ -11,7 +11,7 @@ namespace Bing.CodeGenerator.Entity
         /// <summary>
         /// 架构标识
         /// </summary>
-        public int? Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// 名称
@@ -41,6 +41,6 @@ namespace Bing.CodeGenerator.Entity
         /// <summary>
         /// 路径
         /// </summary>
-        public string Path => IsDefault ? "" : $"{Name}/";
+        public string Path => IsDefault ? "" : $"{Name}";
     }
 }

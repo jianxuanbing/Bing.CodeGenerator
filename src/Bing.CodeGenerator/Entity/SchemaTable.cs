@@ -18,6 +18,6 @@
         /// <summary>
         /// 架构标识
         /// </summary>
-        public int? SchemaId { get; set; }
+        public string SchemaId { get; set; }
     }
 }
