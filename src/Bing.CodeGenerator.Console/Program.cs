@@ -30,6 +30,12 @@ namespace Bing.CodeGenerator.Console
         private static IDictionary<int, string> TemplateDict = new Dictionary<int, string>();
 
         /// <summary>
+        /// 代码生成字典
+        /// </summary>
+        /// <remarks>索引值 - (名称键, 名称值)</remarks>
+        private static IDictionary<int, KeyValuePair<string, CodeGenItem>> _codeGenDict = new Dictionary<int, KeyValuePair<string, CodeGenItem>>();
+
+        /// <summary>
         /// 主函数
         /// </summary>
         public static async Task Main(string[] args)
@@ -42,6 +48,8 @@ namespace Bing.CodeGenerator.Console
             var templateIndex = Convert.ToInt32(InputTemplate());
             var target = TemplateDict[templateIndex];
             var options = GetCodeGenOptions();
+            InitCodeGenDict(options);
+
             System.Console.WriteLine($"欢迎使用{target}代码生成功能器");
             var slnName = InputSlnName(options);
             System.Console.WriteLine($"解决方案: {slnName}");
@@ -69,6 +77,23 @@ namespace Bing.CodeGenerator.Console
             var configuration = codeSettingsBuilder.Build();
             var codeGenOptions = configuration.GetSection(CodeGenKey).Get<CodeGenOptions>();
             return codeGenOptions;
+        }
+
+        /// <summary>
+        /// 初始化代码生成字典
+        /// </summary>
+        /// <param name="dict">字典</param>
+        private static void InitCodeGenDict(IDictionary<string, CodeGenItem> dict)
+        {
+            var i = 1;
+            foreach (var item in dict)
+            {
+                // 如果代码生成字典中的值，已存在Key，则无需再次加入字典中
+                if (_codeGenDict.Values.Any(x => x.Key == item.Key))
+                    continue;
+                _codeGenDict.Add(i, item);
+                i++;
+            }
         }
 
         /// <summary>
@@ -116,7 +141,7 @@ namespace Bing.CodeGenerator.Console
         /// <param name="dict">字典</param>
         private static string InputSlnName(IDictionary<string, CodeGenItem> dict)
         {
-            OutputSlnList(dict);
+            OutputSlnList();
             var result = "";
             result = System.Console.ReadLine()?.Trim();
             if (string.IsNullOrEmpty(result))
@@ -125,12 +150,16 @@ namespace Bing.CodeGenerator.Console
                 return InputSlnName(dict);
             }
 
-            if (!dict.ContainsKey(result))
+            if (int.TryParse(result, out var intResult))
             {
-                System.Console.WriteLine($"不存在该【{result}】方案，请重新输入代码方案!");
-                return InputSlnName(dict);
+                if (!_codeGenDict.ContainsKey(intResult))
+                {
+                    System.Console.WriteLine($"不存在该【{result}】方案，请重新输入代码方案!");
+                    return InputSlnName(dict);
+                }
             }
-            return result;
+
+            return _codeGenDict[intResult].Key;
         }
 
         /// <summary>
@@ -146,6 +175,16 @@ namespace Bing.CodeGenerator.Console
                 System.Console.WriteLine($"{i}. {item.Key}");
                 i++;
             }
+        }
+
+        /// <summary>
+        /// 输出方案列表
+        /// </summary>
+        private static void OutputSlnList()
+        {
+            System.Console.WriteLine("请选择需要生成的解决方案(索引): ");
+            foreach (var item in _codeGenDict) 
+                System.Console.WriteLine($"{item.Key}. {item.Value.Key}");
         }
 
         /// <summary>
