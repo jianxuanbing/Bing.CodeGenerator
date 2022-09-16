@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -142,12 +141,53 @@ namespace Bing.CodeGenerator.Console
             }
             // 自定义模板库
             var customDir = new DirectoryInfo($"{Directory.GetCurrentDirectory()}/RazorTemplates");
+            CopyDir(customDir.FullName, dir.FullName);
             foreach (var dictionary in customDir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
             {
                 if (_templateDict.Values.Contains(dictionary.Name))
                     continue;
                 _templateDict[i] = dictionary.Name;
                 i++;
+            }
+        }
+
+        /// <summary>
+        /// 复制目录
+        /// </summary>
+        /// <param name="sourceDir">源目录</param>
+        /// <param name="destDir">目标目录</param>
+        /// <param name="backupsDir">备份文件夹全名</param>
+        private static void CopyDir(string sourceDir, string destDir, string backupsDir = null)
+        {
+            if (Directory.Exists(sourceDir) && Directory.Exists(destDir))
+            {
+                var sourceDirInfo = new DirectoryInfo(sourceDir);
+                var fileInfos = sourceDirInfo.GetFiles();
+                foreach (var fileInfo in fileInfos)
+                {
+                    var sourceFile = fileInfo.FullName;
+                    var destFile = sourceFile.Replace(sourceDir, destDir);
+                    if (backupsDir != null && File.Exists(destFile))
+                    {
+                        Directory.CreateDirectory(backupsDir);
+                        var backFile = destFile.Replace(destDir, backupsDir);
+                        File.Copy(destDir, backFile, true);
+                    }
+
+                    File.Copy(sourceFile, destFile, true);
+                }
+
+                var dirInfos = sourceDirInfo.GetDirectories();
+                foreach (var dirInfo in dirInfos)
+                {
+                    var sourceDir2 = dirInfo.FullName;
+                    var destDir2 = sourceDir2.Replace(sourceDir, destDir);
+                    string backupsDir2 = null;
+                    if (backupsDir != null)
+                        backupsDir2 = sourceDir2.Replace(sourceDir, backupsDir);
+                    Directory.CreateDirectory(destDir2);
+                    CopyDir(sourceDir2, destDir2, backupsDir2);
+                }
             }
         }
 
