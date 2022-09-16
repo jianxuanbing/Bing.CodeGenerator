@@ -41,7 +41,7 @@ namespace Bing.CodeGenerator.Console
         /// <summary>
         /// 代码生成模式
         /// </summary>
-        private static readonly IDictionary<int, string> _codeGenModeDict = new Dictionary<int, string>()
+        private static readonly IDictionary<int, string> _codeGenModeDict = new Dictionary<int, string>
         {
             { 1, "解决方案模式" },
             { 2, "代码生成模式" }
@@ -56,10 +56,13 @@ namespace Bing.CodeGenerator.Console
             {
                 arg.Cancel = true;
             };
-            System.Console.OutputEncoding = Encoding.UTF8;
-            Prompt.Symbols.Prompt = new Symbol("🤔", "?");
-            Prompt.Symbols.Done = new Symbol("😎", "V");
-            Prompt.Symbols.Error = new Symbol("😱", ">>");
+            System.Console.WriteLine($"============================================================================================");
+            System.Console.WriteLine(Figgle.FiggleFonts.Standard.Render("Bing CodeGenerator"));
+            System.Console.WriteLine($"============================================================================================");
+            System.Console.WriteLine($"============================================================================================");
+            System.Console.WriteLine($"===== 环境路径：{AppContext.BaseDirectory}");
+            System.Console.WriteLine($"===== 配置路径：{Directory.GetCurrentDirectory()}");
+            System.Console.WriteLine($"============================================================================================");
             // 初始化配置信息
             InitTemplateDict();
             var options = GetCodeGenOptions();
@@ -76,7 +79,14 @@ namespace Bing.CodeGenerator.Console
             var slnTypeKv = Prompt.Select("请选择生成代码方式?", _codeGenModeDict, textSelector: x => x.Value);
             System.Console.WriteLine($"生成代码方式：{slnTypeKv.Value}");
             System.Console.WriteLine($"==========================================================");
+
             var app = GetSmartCodeApp(slnTypeKv.Key, options[slnName], target);
+            if (app == null)
+            {
+                System.Console.WriteLine("生成代码失败，路径不存在");
+                System.Console.ReadLine();
+                return;
+            }
             app.Logger.LogInformation("-----------------------------开始生成代码-----------------------------");
             await app.Run();
             app.Logger.LogInformation("-----------------------------结束生成代码-----------------------------");
@@ -89,7 +99,6 @@ namespace Bing.CodeGenerator.Console
         private static CodeGenOptions GetCodeGenOptions()
         {
             var basePath = Directory.GetCurrentDirectory();
-            System.Console.WriteLine($"读取配置文件路径: {basePath}");
             if (!File.Exists(Path.Combine(basePath, CodeSettingsPath)))
                 basePath = AppDomain.CurrentDomain.BaseDirectory;
             var codeSettingsBuilder = new ConfigurationBuilder()
@@ -122,11 +131,21 @@ namespace Bing.CodeGenerator.Console
         /// </summary>
         private static void InitTemplateDict()
         {
+            // 内置模板库
             var dir = new DirectoryInfo($"{AppContext.BaseDirectory}/RazorTemplates");
 
             var i = 1;
             foreach (var dictionary in dir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
             {
+                _templateDict[i] = dictionary.Name;
+                i++;
+            }
+            // 自定义模板库
+            var customDir = new DirectoryInfo($"{Directory.GetCurrentDirectory()}/RazorTemplates");
+            foreach (var dictionary in customDir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
+            {
+                if (_templateDict.Values.Contains(dictionary.Name))
+                    continue;
                 _templateDict[i] = dictionary.Name;
                 i++;
             }
@@ -150,8 +169,20 @@ namespace Bing.CodeGenerator.Console
                     buildSettings = $"{targetFramework}CodeGenerateConfig.yml";
                     break;
             }
+            // 拼接前置路径
+            buildSettings = Path.Combine("Configs", buildSettings);
+            // 构建结果路径
+            var resultFilePath = File.Exists(AppPath.Relative(buildSettings))
+                ? AppPath.Relative(buildSettings)
+                : Path.Combine(Directory.GetCurrentDirectory(), buildSettings);
 
-            var app = new SmartCodeAppBuilder().Build(AppPath.Relative(buildSettings));
+            if (!File.Exists(resultFilePath))
+            {
+                System.Console.WriteLine($"路径不存在：{buildSettings}");
+                return null;
+            }
+
+            var app = new SmartCodeAppBuilder().Build(resultFilePath);
             app.Project.Module = item.SlnName;
             app.Project.DataSource.Parameters["DbName"] = item.DbName;
             app.Project.DataSource.Parameters["DbProvider"] = item.DbProvider;
