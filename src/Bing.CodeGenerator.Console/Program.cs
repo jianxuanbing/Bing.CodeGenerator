@@ -77,12 +77,23 @@ namespace Bing.CodeGenerator.Console
             System.Console.WriteLine($"==========================================================");
             var slnTypeKv = Prompt.Select("请选择生成代码方式?", _codeGenModeDict, textSelector: x => x.Value);
             System.Console.WriteLine($"生成代码方式：{slnTypeKv.Value}");
+            var outputPath = Prompt.Input<string>("请输入代码生成目录");
+            if (string.IsNullOrWhiteSpace(outputPath) || !Directory.Exists(outputPath))
+            {
+                var result = Prompt.Confirm("输入的目录路径无效，是否使用默认配置的输出代码路径？", true);
+                if (!result)
+                {
+                    System.Console.WriteLine("终止代码生成！！！");
+                    System.Console.ReadLine();
+                    return;
+                }
+            }
             System.Console.WriteLine($"==========================================================");
 
-            var app = GetSmartCodeApp(slnTypeKv.Key, options[slnName], target);
+            var app = GetSmartCodeApp(slnTypeKv.Key, slnName, options[slnName], target, outputPath);
             if (app == null)
             {
-                System.Console.WriteLine("生成代码失败，路径不存在");
+                System.Console.WriteLine("生成代码失败，路径不存在！！！");
                 System.Console.ReadLine();
                 return;
             }
@@ -130,17 +141,24 @@ namespace Bing.CodeGenerator.Console
         /// </summary>
         private static void InitTemplateDict()
         {
+            var appPath = $"{AppContext.BaseDirectory}/RazorTemplates";
             // 内置模板库
-            var dir = new DirectoryInfo($"{AppContext.BaseDirectory}/RazorTemplates");
-
+            var dir = new DirectoryInfo(appPath);
             var i = 1;
             foreach (var dictionary in dir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
             {
                 _templateDict[i] = dictionary.Name;
                 i++;
             }
+            if (AppContext.BaseDirectory.TrimEnd('\\').Equals(Directory.GetCurrentDirectory().TrimEnd('\\')))
+                return;
+
+            // 检查自定义模板路径，如果路径等同应用路径，则无需下一步操作
+            var customPath = $"{Directory.GetCurrentDirectory()}/RazorTemplates";
+            if (!Directory.Exists(customPath))
+                return;
             // 自定义模板库
-            var customDir = new DirectoryInfo($"{Directory.GetCurrentDirectory()}/RazorTemplates");
+            var customDir = new DirectoryInfo(customPath);
             CopyDir(customDir.FullName, dir.FullName);
             foreach (var dictionary in customDir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
             {
@@ -195,9 +213,11 @@ namespace Bing.CodeGenerator.Console
         /// 获取SmartCodeApp
         /// </summary>
         /// <param name="slnType">解决方案类型</param>
+        /// <param name="slnName">解决方案名称</param>
         /// <param name="item">代码生成项</param>
         /// <param name="targetFramework">目标框架</param>
-        private static SmartCodeApp GetSmartCodeApp(int slnType, CodeGenItem item, string targetFramework)
+        /// <param name="outputPath">输出路径</param>
+        private static SmartCodeApp GetSmartCodeApp(int slnType, string slnName, CodeGenItem item, string targetFramework, string outputPath)
         {
             var buildSettings = "";
             switch (slnType)
@@ -227,7 +247,7 @@ namespace Bing.CodeGenerator.Console
             app.Project.DataSource.Parameters["DbName"] = item.DbName;
             app.Project.DataSource.Parameters["DbProvider"] = item.DbProvider;
             app.Project.DataSource.Parameters["ConnectionString"] = item.DbConnectionString;
-            app.Project.Output.Path = item.OutputPath;
+            app.Project.Output.Path = string.IsNullOrWhiteSpace(outputPath) ? item.OutputPath : Path.Combine(outputPath, $"generate_{slnName}");
             app.Project.Parameters["UnitOfWork"] = item.UnitOfWorkName;
             return app;
         }
