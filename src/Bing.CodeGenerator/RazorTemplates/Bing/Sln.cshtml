@@ -30,11 +30,9 @@ Global
         HideSolutionNode = FALSE
     EndGlobalSection
     GlobalSection(NestedProjects) = preSolution
-@foreach (var item in sln.GetSlnRelation())
-{
-    <text>
-        {@item.Key} = {@item.Value}
-    </text>
-}
+@sln.GetSlnRelationString()
     EndGlobalSection
+    GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {@SlnInfo.SolutionGuid}
+	EndGlobalSection
 EndGlobal

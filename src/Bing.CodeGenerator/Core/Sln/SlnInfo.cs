@@ -61,6 +61,11 @@ namespace Bing.CodeGenerator.Core
         public static List<SlnInfo> SlnInfos { get; } = new List<SlnInfo>();
 
         /// <summary>
+        /// 解决方案GUID
+        /// </summary>
+        public static string SolutionGuid => VsProjectId.Sln;
+
+        /// <summary>
         /// 添加解决方案目录
         /// </summary>
         /// <param name="uuid">解决方案目录ID</param>
@@ -204,7 +209,7 @@ namespace Bing.CodeGenerator.Core
         /// </summary>
         public string GetProjectString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var sln in SlnInfos)
             {
                 // 格式（解决方案目录）：
@@ -223,6 +228,17 @@ namespace Bing.CodeGenerator.Core
         /// 获取项目列表
         /// </summary>
         public IEnumerable<SlnInfo> GetProjects() => SlnInfos.Where(x => x.Type == SlnType.Project);
+
+        /// <summary>
+        /// 获取解决方案关系字符串
+        /// </summary>
+        public string GetSlnRelationString()
+        {
+            var sb = new StringBuilder();
+            foreach (var item in SlnInfos.Where(x => !string.IsNullOrWhiteSpace(x.ParentId)))
+                sb.AppendLine($"\t\t{{{item.Id}}} = {{{item.ParentId}}}");
+            return sb.ToString().TrimEnd();
+        }
 
         /// <summary>
         /// 获取解决方案关系

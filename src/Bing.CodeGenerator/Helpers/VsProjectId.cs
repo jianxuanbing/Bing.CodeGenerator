@@ -8,6 +8,11 @@ namespace Bing.CodeGenerator.Helpers
     public static class VsProjectId
     {
         /// <summary>
+        /// 解决方案标识
+        /// </summary>
+        public static string Sln { get; set; } = Guid.NewGuid().ToString().ToUpperInvariant();
+
+        /// <summary>
         /// src解决方案文件夹标识
         /// </summary>
         public static string Src { get; set; } = Guid.NewGuid().ToString().ToUpperInvariant();
