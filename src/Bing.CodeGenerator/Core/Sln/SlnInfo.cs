@@ -176,7 +176,7 @@ namespace Bing.CodeGenerator.Core
             // 01-Presentation
             AddProject(module, VsProjectId.Presentation);
             // 02-Service
-            AddProject($"{module}.Service", VsProjectId.Presentation);
+            AddProject($"{module}.Service", VsProjectId.Service);
             // 03-Domain
             if (!schemas.Any())
             {
