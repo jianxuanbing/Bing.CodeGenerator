@@ -1,4 +1,6 @@
-﻿namespace Bing.CodeGenerator.Core
+﻿using System;
+
+namespace Bing.CodeGenerator.Core
 {
     /// <summary>
     /// 方案类型
@@ -8,6 +10,7 @@
         /// <summary>
         /// 根目录
         /// </summary>
+        [Obsolete("弃用枚举类型")]
         Root = 0,
         /// <summary>
         /// 解决方案文件夹
