@@ -13,26 +13,6 @@ namespace Bing.CodeGenerator.Core
     public class SlnInfo
     {
         /// <summary>
-        /// 解决方案标识
-        /// </summary>
-        private static string _solutionId = "2150E333-8FDC-42A3-9474-1A3956D46DE8";
-
-        /// <summary>
-        /// 项目方案标识
-        /// </summary>
-        private static string _projectId = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
-
-        /// <summary>
-        /// 解决方案标识
-        /// </summary>
-        public static string SolutionId => _solutionId ?? (_solutionId = Guid.NewGuid().ToString().ToUpper());
-
-        /// <summary>
-        /// 项目方案标识
-        /// </summary>
-        public static string ProjectId => _projectId ?? (_projectId = Guid.NewGuid().ToString().ToUpper());
-
-        /// <summary>
         /// 标识
         /// </summary>
         public string Id { get; private set; } = Guid.NewGuid().ToString().ToUpper();
@@ -74,16 +54,6 @@ namespace Bing.CodeGenerator.Core
         /// 父标识
         /// </summary>
         public string ParentId { get; private set; }
-
-        /// <summary>
-        /// 父方案
-        /// </summary>
-        public SlnInfo Parent { get; private set; }
-
-        /// <summary>
-        /// 子方案列表
-        /// </summary>
-        public IList<SlnInfo> Childrens { get; } = new List<SlnInfo>();
 
         /// <summary>
         /// 解决方案信息列表，用于存放解决方案所有关系应用
@@ -261,7 +231,7 @@ namespace Bing.CodeGenerator.Core
         {
             var dict = new Dictionary<string, string>();
             foreach (var item in SlnInfos.Where(x => !string.IsNullOrWhiteSpace(x.ParentId)))
-                dict[item.Id] = item.ParentId;
+                dict.Add(item.Id, item.ParentId);
             return dict;
         }
     }
