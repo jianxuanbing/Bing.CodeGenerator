@@ -47,10 +47,10 @@ Build:
       Path: '.'
     Parameters:
       Templates: [{Key: 'Sln.cshtml', Output: { Name: '{{Project.Module}}', Extension: '.sln'}}, 
-      {Key: 'Sln-Common.cshtml', Output: { Path: 'build', Name: 'version', Extension: '.props'}},
+      {Key: 'Sln-Common.cshtml', Output: { Name: 'common', Extension: '.props'}},
       {Key: 'Sln-Directory.Build.cshtml', Output: { Name: 'Directory.Build', Extension: '.props'}}, 
-      {Key: 'Sln-Version.cshtml', Output: { Path: 'build', Name: 'version', Extension: '.props'}},
-      {Key: 'Sln-Version.Dev.cshtml', Output: { Path: 'build', Name: 'version.dev', Extension: '.props'}},
+      {Key: 'Sln-Version.cshtml', Output: { Name: 'version', Extension: '.props'}},
+      {Key: 'Sln-Version.Dev.cshtml', Output: { Name: 'version.dev', Extension: '.props'}},
       {Key: 'Sln-Dockerfile.cshtml', Output: { Name: 'Dockerfile', Extension: ''}}, 
       {Key: 'Sln-DockerIgnore.cshtml', Output: { Name: '.dockerignore', Extension: ''}}, 
       {Key: 'Sln-GitIgnore.cshtml', Output: { Name: '.gitignore', Extension: ''}}, 
