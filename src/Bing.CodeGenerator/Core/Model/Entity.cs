@@ -73,7 +73,10 @@ namespace Bing.CodeGenerator.Core
         {
             var key = Properties.FirstOrDefault(x => x.IsPrimaryKey.SafeValue());
             if (key == null)
+            {
+                Console.WriteLine($"TableName: {TableName}, 没有设置主键!");
                 throw new Exception("没有设置主键");
+            }
             return key;
         }
 

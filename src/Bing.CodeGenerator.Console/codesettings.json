@@ -13,7 +13,7 @@
       "SlnName": "Utopa.Wms",
       "DbName": "Wms",
       "DbProvider": "SqlServer",
-      "DbConnectionString": "Data Source=;Initial Catalog=Wms;User Id=sa;Password=Bing2019.00;",
+      "DbConnectionString": "Data Source=10.186.132.224,21433;Initial Catalog=Wms;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_wms",
       "UnitOfWorkName": "Wms"
     },
@@ -47,6 +47,14 @@
       "DbProvider": "SqlServer",
       "DbConnectionString": "Data Source=10.186.132.224,21433;Initial Catalog=Admin;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_bing_admin",
+      "UnitOfWorkName": "BingAdmin"
+    },
+    "bing_sample_pgsql_complex": {
+      "SlnName": "Bing.Admin",
+      "DbName": "test_code_gen",
+      "DbProvider": "PostgreSql",
+      "DbConnectionString": "Server=10.186.135.169;Port=15432;User Id=admin;Password=bing2019.00; Database=test_code_gen",
+      "OutputPath": "D:\\demo\\generate_bing_sample_pgsql_complex",
       "UnitOfWorkName": "BingAdmin"
     }
   }
