@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Bing.CodeGenerator.Extensions;
 using Microsoft.Extensions.Logging;
 using SmartCode;
@@ -46,7 +47,7 @@ namespace Bing.CodeGenerator.BuildTasks
                 //    continue;
                 _logger.LogInformation($"BuildSchema:{schema.Name} Start!");
                 context.SetCurrentSchema(schema);
-                var filterTables = FilterTable(schema.Tables, context.BuildKey, context.Build);
+                var filterTables = FilterTable(schema.Tables, context.BuildKey, context.Build).ToList();
                 foreach (var table in filterTables)
                 {
                     _logger.LogInformation($"BuildTable:{table.Name} Start!");
