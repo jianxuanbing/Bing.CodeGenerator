@@ -51,7 +51,9 @@ namespace Bing.CodeGenerator.BuildTasks
                 //    continue;
                 _logger.LogInformation($"BuildSchema:{schema.Name} Start!");
                 context.SetCurrentSchema(schema);
-                var filterTables = CustomFilterTable(schema.Tables, context.BuildKey, context.Build).ToList();
+                context.Build.IgnoreNoPKTable = true;
+                var filterTables = FilterTable(schema.Tables, context.BuildKey, context.Build);
+                filterTables = FilterTable(filterTables, context.BuildKey, context.Project);
                 foreach (var table in filterTables)
                 {
                     _logger.LogInformation($"BuildTable:{table.Name} Start!");
@@ -66,42 +68,46 @@ namespace Bing.CodeGenerator.BuildTasks
         }
 
         /// <summary>
-        /// 自定义过滤表
+        /// 过滤表
         /// </summary>
         /// <param name="tables">表集合</param>
         /// <param name="buildKey">构建KEY</param>
-        /// <param name="build">构建</param>
-        protected IList<Table> CustomFilterTable(IEnumerable<Table> tables, string buildKey, Build build)
+        /// <param name="project">项目</param>
+        protected IList<Table> FilterTable(IEnumerable<Table> tables, string buildKey, Project project)
         {
-            _logger.LogInformation($"FilterTable Build:{buildKey} Start!");
-            IEnumerable<Table> buildTables = tables;
-            if (build.IgnoreNoPKTable.HasValue && build.IgnoreNoPKTable.Value)
+            _logger.LogInformation($"Project FilterTable Build:{buildKey} Start!");
+            IEnumerable<Table> buildTables = CopyTables(tables);
+            var tableFilter = project.TableFilter;
+            if (tableFilter != null)
             {
-                _logger.LogInformation($"FilterTable Build:{buildKey} IgnoreNoPKTable!");
-                buildTables = buildTables.Where(m => m.PKColumn != null);
+                if (tableFilter.IgnoreNoPKTable.HasValue && tableFilter.IgnoreNoPKTable.Value)
+                {
+                    _logger.LogInformation($"Project FilterTable Build:{buildKey} IgnoreNoPKTable!");
+                    buildTables = buildTables.Where(m => m.PKColumn != null);
+                }
+
+                if (tableFilter.IgnoreView.HasValue && tableFilter.IgnoreView.Value)
+                {
+                    _logger.LogInformation($"Project FilterTable Build:{buildKey} IgnoreView!");
+                    buildTables = buildTables.Where(m => m.Type != Table.TableType.View);
+                }
+
+                if (tableFilter.IgnoreTables != null)
+                {
+                    _logger.LogInformation(
+                        $"Project FilterTable Build:{buildKey} IgnoreTables: [{String.Join(",", tableFilter.IgnoreTables)}]!");
+                    buildTables = buildTables.Where(m => !tableFilter.IgnoreTables.Contains(m.Name));
+                }
+
+                if (tableFilter.IncludeTables != null)
+                {
+                    _logger.LogInformation(
+                        $"Project FilterTable Build:{buildKey} IncludeTables: [{String.Join(",", tableFilter.IncludeTables)}]!");
+                    buildTables = buildTables.Where(m => tableFilter.IncludeTables.Contains(m.Name));
+                }
             }
 
-            if (build.IgnoreView.HasValue && build.IgnoreView.Value)
-            {
-                _logger.LogInformation($"FilterTable Build:{buildKey} IgnoreView!");
-                buildTables = buildTables.Where(m => m.Type != Table.TableType.View);
-            }
-
-            if (build.IgnoreTables != null)
-            {
-                _logger.LogInformation(
-                    $"FilterTable Build:{buildKey} IgnoreTables: [{String.Join(",", build.IgnoreTables)}]!");
-                buildTables = buildTables.Where(m => !build.IgnoreTables.Contains(m.Name));
-            }
-
-            if (build.IncludeTables != null)
-            {
-                _logger.LogInformation(
-                    $"FilterTable Build:{buildKey} IncludeTables: [{String.Join(",", build.IncludeTables)}]!");
-                buildTables = buildTables.Where(m => build.IncludeTables.Contains(m.Name));
-            }
-
-            _logger.LogInformation($"FilterTable Build:{buildKey} End!");
+            _logger.LogInformation($"Project FilterTable Build:{buildKey} End!");
             return buildTables.ToList();
         }
     }
