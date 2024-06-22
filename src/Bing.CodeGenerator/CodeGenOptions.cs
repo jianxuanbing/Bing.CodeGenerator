@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Bing.CodeGenerator.Configuration;
+using SmartCode.Configuration;
 
 namespace Bing.CodeGenerator
 {
@@ -43,5 +45,15 @@ namespace Bing.CodeGenerator
         /// 工作单元名称
         /// </summary>
         public string UnitOfWorkName { get; set; }
+
+        /// <summary>
+        /// 数据表过滤
+        /// </summary>
+        public TableFilter TableFilter { get; set; }
+
+        /// <summary>
+        /// 架构过滤
+        /// </summary>
+        public SchemaFilter SchemaFilter { get; set; }
     }
 }

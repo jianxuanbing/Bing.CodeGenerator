@@ -1,4 +1,4 @@
-﻿using SmartCode;
+﻿using Bing.CodeGenerator.Configuration;
 using SmartCode.Configuration;
 
 namespace Bing.CodeGenerator.Extensions
@@ -20,5 +20,20 @@ namespace Bing.CodeGenerator.Extensions
         /// </summary>
         /// <param name="project">项目</param>
         public static string GetUnitOfWork(this Project project) => $"{project.Parameters["UnitOfWork"]}UnitOfWork";
+
+        /// <summary>
+        /// 获取架构过滤
+        /// </summary>
+        /// <param name="project">项目</param>
+        public static SchemaFilter GetSchemaFilter(this Project project)
+        {
+            if (project.Parameters.ContainsKey(nameof(SchemaFilter)))
+            {
+                var filter = (SchemaFilter)project.Parameters[nameof(SchemaFilter)];
+                return filter;
+            }
+
+            return null;
+        }
     }
 }

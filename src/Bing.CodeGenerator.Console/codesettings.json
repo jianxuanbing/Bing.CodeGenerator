@@ -55,7 +55,23 @@
       "DbProvider": "PostgreSql",
       "DbConnectionString": "Server=10.186.135.169;Port=15432;User Id=admin;Password=bing2019.00; Database=test_code_gen",
       "OutputPath": "D:\\demo\\generate_bing_sample_pgsql_complex",
-      "UnitOfWorkName": "BingAdmin"
+      "UnitOfWorkName": "BingAdmin",
+      "TableFilter": {
+        "IncludeTables": [
+          ""
+        ],
+        "IgnoreNoPKTable": true,
+        "IgnoreView": true
+      },
+      "SchemaFilter": {
+        "IncludeSchemas": [
+          "dbo"
+        ],
+        "IgnoreSchemas": [
+          "sys",
+          "public"
+        ]
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Bing.CodeGenerator.Core;
 using Bing.CodeGenerator.Entity;
 using SmartCode;
@@ -33,7 +34,15 @@ namespace Bing.CodeGenerator.Extensions
         {
             if (!context.Items.ContainsKey(CurrentAllSchema))
             {
+                var filter = context.Project.GetSchemaFilter();
                 var schemas = context.GetDataSource<DbTableWithSchemaSource>().Schemas;
+                if (filter != null)
+                {
+                    if (filter.IgnoreSchemas.Any())
+                        schemas = schemas.Where(x => !filter.IgnoreSchemas.Contains(x.Name)).ToList();
+                    if (filter.IncludeSchemas.Any())
+                        schemas = schemas.Where(x => filter.IncludeSchemas.Contains(x.Name)).ToList();
+                }
                 context.SetItem(CurrentAllSchema, schemas);
                 return schemas;
             }

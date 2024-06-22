@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Bing.CodeGenerator.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Sharprompt;
@@ -249,6 +250,12 @@ namespace Bing.CodeGenerator.Console
             app.Project.DataSource.Parameters["ConnectionString"] = item.DbConnectionString;
             app.Project.Output.Path = string.IsNullOrWhiteSpace(outputPath) ? item.OutputPath : Path.Combine(outputPath, $"generate_{slnName}");
             app.Project.Parameters["UnitOfWork"] = item.UnitOfWorkName;
+            // 设置表过滤
+            if (item.TableFilter != null)
+                app.Project.TableFilter = item.TableFilter;
+            // 设计架构过滤
+            if (item.SchemaFilter != null)
+                app.Project.Parameters[nameof(SchemaFilter)] = item.SchemaFilter;
             return app;
         }
 
