@@ -46,7 +46,8 @@ namespace Bing.CodeGenerator.BuildTasks
                 //    continue;
                 _logger.LogInformation($"BuildSchema:{schema.Name} Start!");
                 context.SetCurrentSchema(schema);
-                foreach (var table in schema.Tables)
+                var filterTables = FilterTable(schema.Tables, context.BuildKey, context.Build);
+                foreach (var table in filterTables)
                 {
                     _logger.LogInformation($"BuildTable:{table.Name} Start!");
                     context.SetCurrentTable(table);
