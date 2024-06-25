@@ -57,9 +57,6 @@
       "OutputPath": "D:\\demo\\generate_bing_sample_pgsql_complex",
       "UnitOfWorkName": "BingAdmin",
       "TableFilter": {
-        "IncludeTables": [
-          ""
-        ],
         "IgnoreNoPKTable": true,
         "IgnoreView": true
       },
