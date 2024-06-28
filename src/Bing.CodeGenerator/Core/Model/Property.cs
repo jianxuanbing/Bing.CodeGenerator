@@ -336,7 +336,7 @@ namespace Bing.CodeGenerator.Core
                 return;
             if (DataType == DbType.Boolean)
                 return;
-            result.Add($"[Required(ErrorMessage = \"{Description}不能为空\")]");
+            result.Add($"[Required(ErrorMessage = \"{Description?.Replace("\r\n", "")?.Replace(" ", "")}不能为空\")]");
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace Bing.CodeGenerator.Core
                 return;
             if(!MaxLength.HasValue)
                 return;
-            result.Add($"[StringLength( {GetSafeMaxLength()}, ErrorMessage = \"{Description}输入过长，不能超过{GetSafeMaxLength()}位\" )]");
+            result.Add($"[StringLength( {GetSafeMaxLength()}, ErrorMessage = \"{Description?.Replace("\r\n", "")?.Replace(" ", "")}输入过长，不能超过{GetSafeMaxLength()}位\" )]");
         }
 
         /// <summary>
