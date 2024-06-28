@@ -49,9 +49,9 @@ namespace @(Model.GetDomainName("Models"))
     }
     <text>
         /// <summary>
-        /// @property.Description
+        /// @property.Description?.Replace("\r\n", "")?.Replace(" ", "")
         ///</summary>
-        [Display(Name = "@property.Description")]
+        [Display(Name = "@property.Description?.Replace("\r\n", "")?.Replace(" ", "")")]
     @if (property.HasValidate())
     {
         @:@property.Validate()
