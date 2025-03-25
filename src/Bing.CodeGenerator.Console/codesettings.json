@@ -5,7 +5,7 @@
       "SlnName": "Utopa.Erp",
       "DbName": "Erp",
       "DbProvider": "SqlServer",
-      "DbConnectionString": "Data Source=10.186.132.224,21433;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;",
+      "DbConnectionString": "Data Source=10.186.135.169,21433;Initial Catalog=Erp;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_erp",
       "UnitOfWorkName": "Erp"
     },
@@ -13,7 +13,7 @@
       "SlnName": "Utopa.Wms",
       "DbName": "Wms",
       "DbProvider": "SqlServer",
-      "DbConnectionString": "Data Source=10.186.132.224,21433;Initial Catalog=Wms;User Id=sa;Password=Bing2019.00;",
+      "DbConnectionString": "Data Source=10.186.135.169,21433;Initial Catalog=Wms;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_wms",
       "UnitOfWorkName": "Wms"
     },
@@ -29,7 +29,7 @@
       "SlnName": "Utopa.Tms.Mini",
       "DbName": "Tms_Mini",
       "DbProvider": "SqlServer",
-      "DbConnectionString": "Data Source=10.186.132.224,21433;Initial Catalog=Tms_Mini;User Id=sa;Password=Bing2019.00;",
+      "DbConnectionString": "Data Source=10.186.135.169,21433;Initial Catalog=Tms_Mini;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_tms_mini",
       "UnitOfWorkName": "TmsMini"
     },
@@ -45,7 +45,7 @@
       "SlnName": "Bing.Admin",
       "DbName": "bing_admin",
       "DbProvider": "SqlServer",
-      "DbConnectionString": "Data Source=10.186.132.224,21433;Initial Catalog=Admin;User Id=sa;Password=Bing2019.00;",
+      "DbConnectionString": "Data Source=10.186.135.169,21433;Initial Catalog=Admin;User Id=sa;Password=Bing2019.00;",
       "OutputPath": "D:\\demo\\generate_bing_admin",
       "UnitOfWorkName": "BingAdmin"
     },
