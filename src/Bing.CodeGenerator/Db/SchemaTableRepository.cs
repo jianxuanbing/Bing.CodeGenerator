@@ -84,7 +84,7 @@ namespace Bing.CodeGenerator.Db
                 Request = new { DbName, DbSchema, SchemaId = schemaId }
             });
             var tableIds = schemaTableRelations.Select(x => x.Id);
-            return sourceTables.Where(x => tableIds.Contains(x.Id)).ToList();
+            return sourceTables.Where(x => tableIds.Contains(x.Id)).OrderBy(x => x.Name).ToList();
         }
 
         /// <summary>

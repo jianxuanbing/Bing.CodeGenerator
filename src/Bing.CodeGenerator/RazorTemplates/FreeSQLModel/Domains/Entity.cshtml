@@ -22,7 +22,7 @@ namespace @($"{project.Module}.Domain.Models.{schema.Name}")
     /// </summary>
     [Display(Name = "@entity.Description")]
     [Table(Name = "`@entity.FullName`")]
-    public partial class @entity.ClassName@(string.IsNullOrWhiteSpace(entity.GetISoftDelete())?string.Empty:": ISoftDelete")
+    public partial class @entity.ClassName@(string.IsNullOrWhiteSpace(entity.GetInterfaces()) ? string.Empty : $": {entity.GetInterfaces().TrimStart(',').Trim()}")
     {
 @foreach (var property in entity.Properties)
 {
