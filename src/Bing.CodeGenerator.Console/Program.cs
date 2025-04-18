@@ -25,7 +25,7 @@ public class Program
     /// <summary>
     /// 模板字典
     /// </summary>
-    private static readonly IDictionary<int, string> _templateDict = new Dictionary<int, string>();
+    private static readonly Dictionary<int, string> _templateDict = new Dictionary<int, string>();
 
     /// <summary>
     /// 代码生成字典
@@ -47,45 +47,36 @@ public class Program
     /// </summary>
     public static async Task Main(string[] args)
     {
-        System.Console.CancelKeyPress += (sender, arg) =>
-        {
-            arg.Cancel = true;
-        };
-        System.Console.WriteLine($"============================================================================================");
-        System.Console.WriteLine(Figgle.FiggleFonts.Standard.Render("Bing CodeGenerator"));
-        System.Console.WriteLine($"============================================================================================");
-        System.Console.WriteLine($"============================================================================================");
-        System.Console.WriteLine($"===== 环境路径：{AppContext.BaseDirectory}");
-        System.Console.WriteLine($"===== 配置路径：{Directory.GetCurrentDirectory()}");
-        System.Console.WriteLine($"============================================================================================");
+        System.Console.CancelKeyPress += (sender, arg) => arg.Cancel = true;
+        
+        ConsoleHelper.PrintHeader();
+
         // 初始化配置信息
         InitTemplateDict();
         var options = GetCodeGenOptions();
         InitCodeGenDict(options);
 
+        // 用户选择代码模板
         var target = Prompt.Select("请选择生成代码模板?", _templateDict.Values);
         System.Console.WriteLine($"你选中的代码模板为：{target}");
-        System.Console.WriteLine($"==========================================================");
-        System.Console.WriteLine($"===========    欢迎使用{target}代码生成功能器    ===========");
-        System.Console.WriteLine($"==========================================================");
+        ConsoleHelper.PrintSectionHeader($"欢迎使用{target}代码生成功能器");
+        
+        // 用户选择解决方案
         var slnName = Prompt.Select("请选择需要生成的解决方案?", _codeGenDict.Values.Select(x => x.Key));
         System.Console.WriteLine($"解决方案：{slnName}");
-        System.Console.WriteLine($"==========================================================");
+        System.Console.WriteLine(new string('=', 58));
+
+        // 用户选择代码生成方式
         var slnTypeKv = Prompt.Select("请选择生成代码方式?", _codeGenModeDict, textSelector: x => x.Value);
         System.Console.WriteLine($"生成代码方式：{slnTypeKv.Value}");
-        var outputPath = Prompt.Input<string>("请输入代码生成目录");
-        if (string.IsNullOrWhiteSpace(outputPath) || !Directory.Exists(outputPath))
-        {
-            var result = Prompt.Confirm("输入的目录路径无效，是否使用默认配置的输出代码路径？", true);
-            if (!result)
-            {
-                System.Console.WriteLine("终止代码生成！！！");
-                System.Console.ReadLine();
-                return;
-            }
-        }
-        System.Console.WriteLine($"==========================================================");
 
+        // 用户输入输出路径
+        var outputPath = ConsoleHelper.GetValidOutputPath();
+        if (outputPath == null)
+            return;
+        System.Console.WriteLine(new string('=', 58));
+
+        // 生成代码
         var app = GetSmartCodeApp(slnTypeKv.Key, slnName, options[slnName], target, outputPath);
         if (app == null)
         {
@@ -105,14 +96,15 @@ public class Program
     private static CodeGenOptions GetCodeGenOptions()
     {
         var basePath = Directory.GetCurrentDirectory();
-        if (!File.Exists(Path.Combine(basePath, CodeSettingsPath)))
+        var configPath = Path.Combine(basePath, CodeSettingsPath);
+        if (!File.Exists(configPath)) 
             basePath = AppDomain.CurrentDomain.BaseDirectory;
-        var codeSettingsBuilder = new ConfigurationBuilder()
+
+        var configuration = new ConfigurationBuilder()
             .SetBasePath(basePath)
-            .AddJsonFile(CodeSettingsPath, false, true);
-        var configuration = codeSettingsBuilder.Build();
-        var codeGenOptions = configuration.GetSection(CodeGenKey).Get<CodeGenOptions>();
-        return codeGenOptions;
+            .AddJsonFile(CodeSettingsPath, false, true)
+            .Build();
+        return configuration.GetSection(CodeGenKey).Get<CodeGenOptions>();
     }
 
     /// <summary>
@@ -124,11 +116,10 @@ public class Program
         var i = 1;
         foreach (var item in dict)
         {
-            // 如果代码生成字典中的值，已存在Key，则无需再次加入字典中
+            // 避免重复添加
             if (_codeGenDict.Values.Any(x => x.Key == item.Key))
                 continue;
-            _codeGenDict.Add(i, item);
-            i++;
+            _codeGenDict.Add(i++, item);
         }
     }
 
@@ -137,33 +128,51 @@ public class Program
     /// </summary>
     private static void InitTemplateDict()
     {
-        var appPath = $"{AppContext.BaseDirectory}/RazorTemplates";
-        // 内置模板库
-        var dir = new DirectoryInfo(appPath);
-        var i = 1;
-        foreach (var dictionary in dir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
-        {
-            _templateDict[i] = dictionary.Name;
-            i++;
-        }
-        if (AppContext.BaseDirectory.TrimEnd('\\').Equals(Directory.GetCurrentDirectory().TrimEnd('\\')))
+        var appPath = Path.Combine(AppContext.BaseDirectory, "RazorTemplates");
+        LoadTemplatesFromDirectory(appPath, _templateDict);
+
+        // 如果当前目录与应用程序目录相同，则无需加载自定义模板
+        if (PathsAreEqual(AppContext.BaseDirectory, Directory.GetCurrentDirectory()))
             return;
 
-        // 检查自定义模板路径，如果路径等同应用路径，则无需下一步操作
-        var customPath = $"{Directory.GetCurrentDirectory()}/RazorTemplates";
+        // 加载自定义模板
+        var customPath = Path.Combine(Directory.GetCurrentDirectory(), "RazorTemplates");
         if (!Directory.Exists(customPath))
             return;
-        // 自定义模板库
-        var customDir = new DirectoryInfo(customPath);
-        CopyDir(customDir.FullName, dir.FullName);
-        foreach (var dictionary in customDir.GetDirectories().Where(x => !x.Name.StartsWith('.')))
+
+        // 复制自定义模板到应用目录
+        CopyDir(customPath, appPath);
+
+        // 加载未重复的自定义模板
+        LoadTemplatesFromDirectory(customPath, _templateDict, true);
+    }
+
+    /// <summary>
+    /// 从目录加载模板
+    /// </summary>
+    /// <param name="directoryPath">目录路径</param>
+    /// <param name="templateDict">模板字典</param>
+    /// <param name="skipExisting">是否跳过已存在模板</param>
+    private static void LoadTemplatesFromDirectory(string directoryPath, Dictionary<int, string> templateDict, bool skipExisting = false)
+    {
+        if(!Directory.Exists(directoryPath))
+            return;
+        var dirInfo = new DirectoryInfo(directoryPath);
+        var nextIndex = templateDict.Count > 0 ? templateDict.Keys.Max() + 1 : 1;
+        foreach (var directory in dirInfo.GetDirectories().Where(x => !x.Name.StartsWith('.')))
         {
-            if (_templateDict.Values.Contains(dictionary.Name))
+            if (skipExisting && templateDict.Values.Contains(directory.Name))
                 continue;
-            _templateDict[i] = dictionary.Name;
-            i++;
+            templateDict[nextIndex++] = directory.Name;
         }
     }
+
+    /// <summary>
+    /// 判断两个路径是否相等
+    /// </summary>
+    /// <param name="path1">路径1</param>
+    /// <param name="path2">路径2</param>
+    private static bool PathsAreEqual(string path1, string path2) => path1.TrimEnd('\\').Equals(path2.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// 复制目录
@@ -173,35 +182,37 @@ public class Program
     /// <param name="backupsDir">备份文件夹全名</param>
     private static void CopyDir(string sourceDir, string destDir, string backupsDir = null)
     {
-        if (Directory.Exists(sourceDir) && Directory.Exists(destDir))
+        if (!Directory.Exists(sourceDir) || !Directory.Exists(destDir))
+            return;
+
+        var sourceDirInfo = new DirectoryInfo(sourceDir);
+
+        // 复制文件
+        foreach (var fileInfo in sourceDirInfo.GetFiles())
         {
-            var sourceDirInfo = new DirectoryInfo(sourceDir);
-            var fileInfos = sourceDirInfo.GetFiles();
-            foreach (var fileInfo in fileInfos)
-            {
-                var sourceFile = fileInfo.FullName;
-                var destFile = sourceFile.Replace(sourceDir, destDir);
-                if (backupsDir != null && File.Exists(destFile))
-                {
-                    Directory.CreateDirectory(backupsDir);
-                    var backFile = destFile.Replace(destDir, backupsDir);
-                    File.Copy(destDir, backFile, true);
-                }
+            var sourceFile = fileInfo.FullName;
+            var destFile = sourceFile.Replace(sourceDir, destDir);
 
-                File.Copy(sourceFile, destFile, true);
+            // 备份现有文件
+            if (backupsDir != null && File.Exists(destFile))
+            {
+                Directory.CreateDirectory(backupsDir);
+                var backFile = destFile.Replace(destDir, backupsDir);
+                File.Copy(destDir, backFile, true);
             }
 
-            var dirInfos = sourceDirInfo.GetDirectories();
-            foreach (var dirInfo in dirInfos)
-            {
-                var sourceDir2 = dirInfo.FullName;
-                var destDir2 = sourceDir2.Replace(sourceDir, destDir);
-                string backupsDir2 = null;
-                if (backupsDir != null)
-                    backupsDir2 = sourceDir2.Replace(sourceDir, backupsDir);
-                Directory.CreateDirectory(destDir2);
-                CopyDir(sourceDir2, destDir2, backupsDir2);
-            }
+            File.Copy(sourceFile, destFile, true);
+        }
+
+        // 递归复制子目录
+        foreach (var dirInfo in sourceDirInfo.GetDirectories())
+        {
+            var sourceSubDir = dirInfo.FullName;
+            var destSubDir = sourceSubDir.Replace(sourceDir, destDir);
+            var backupsSubDir = backupsDir != null ? sourceSubDir.Replace(sourceDir, backupsDir) : null;
+
+            Directory.CreateDirectory(destSubDir);
+            CopyDir(sourceSubDir, destSubDir, backupsSubDir);
         }
     }
 
@@ -215,19 +226,15 @@ public class Program
     /// <param name="outputPath">输出路径</param>
     private static SmartCodeApp GetSmartCodeApp(int slnType, string slnName, CodeGenItem item, string targetFramework, string outputPath)
     {
-        var buildSettings = "";
-        switch (slnType)
+        var configFileName = slnType switch
         {
-            case 1:
-                buildSettings = $"{targetFramework}SlnGenerateConfig.yml";
-                break;
-            case 2:
-                buildSettings = $"{targetFramework}CodeGenerateConfig.yml";
-                break;
-        }
-        // 拼接前置路径
-        buildSettings = Path.Combine("Configs", buildSettings);
-        // 构建结果路径
+            1 => $"{targetFramework}SlnGenerateConfig.yml",
+            2 => $"{targetFramework}CodeGenerateConfig.yml",
+            _ => ""
+        };
+        var buildSettings = Path.Combine("Configs", configFileName);
+
+        // 尝试找到配置文件
         var resultFilePath = File.Exists(AppPath.Relative(buildSettings))
             ? AppPath.Relative(buildSettings)
             : Path.Combine(Directory.GetCurrentDirectory(), buildSettings);
@@ -238,19 +245,28 @@ public class Program
             return null;
         }
 
+        // 构建SmartCode应用程序
         var app = new SmartCodeAppBuilder().Build(resultFilePath);
+
+        // 设置项目参数
         app.Project.Module = item.SlnName;
         app.Project.DataSource.Parameters["DbName"] = item.DbName;
         app.Project.DataSource.Parameters["DbProvider"] = item.DbProvider;
         app.Project.DataSource.Parameters["ConnectionString"] = item.DbConnectionString;
-        app.Project.Output.Path = string.IsNullOrWhiteSpace(outputPath) ? item.OutputPath : Path.Combine(outputPath, targetFramework,$"generate_{slnName}");
+
+        // 设置输出路径
+        app.Project.Output.Path = string.IsNullOrWhiteSpace(outputPath)
+            ? item.OutputPath
+            : Path.Combine(outputPath, $"generate_{slnName}");
+
         app.Project.Parameters["UnitOfWork"] = item.UnitOfWorkName;
-        // 设置表过滤
+
+        // 设置过滤器
         if (item.TableFilter != null)
             app.Project.TableFilter = item.TableFilter;
-        // 设计架构过滤
         if (item.SchemaFilter != null)
             app.Project.Parameters[nameof(SchemaFilter)] = item.SchemaFilter;
+
         return app;
     }
 
