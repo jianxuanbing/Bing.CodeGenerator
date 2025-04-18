@@ -34,7 +34,7 @@ namespace @($"{project.Module}.Domain.Models.{schema.Name}")
     {
         @:[Column(IsPrimary = true)]
     }
-        [Display(Name = "@property.Description")]
+        [Display(Name = "@property.Description", Description = "@property.Description")]
     @if (property.HasValidate())
     {
         @:@property.Validate()

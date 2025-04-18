@@ -27,7 +27,7 @@ namespace @(Model.GetServiceName("Dtos"))
         /// <summary>
         /// @property.Description
         /// </summary>
-        [Display(Name = "@property.Description")]
+        [Display(Name = "@property.Description", Description = "@property.Description")]
     @if (property.HasValidate())
     {
         @:@property.Validate()
