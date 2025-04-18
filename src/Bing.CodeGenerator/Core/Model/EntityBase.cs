@@ -1,13 +1,12 @@
-﻿namespace Bing.CodeGenerator.Core
+﻿namespace Bing.CodeGenerator.Core;
+
+/// <summary>
+/// 实体基类
+/// </summary>
+public class EntityBase
 {
     /// <summary>
-    /// 实体基类
+    /// 是否已处理
     /// </summary>
-    public class EntityBase
-    {
-        /// <summary>
-        /// 是否已处理
-        /// </summary>
-        public bool IsProcessed { get; set; }
-    }
+    public bool IsProcessed { get; set; }
 }

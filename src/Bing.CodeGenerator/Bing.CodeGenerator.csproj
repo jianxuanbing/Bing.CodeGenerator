@@ -5,6 +5,13 @@
 	  <DebugType>embedded</DebugType>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<NoWarn>$(NoWarn);CS1591;NETSDK1138</NoWarn>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="RazorTemplates\Bing\Tests\**" />
     <EmbeddedResource Remove="RazorTemplates\Bing\Tests\**" />

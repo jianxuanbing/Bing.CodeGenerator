@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -19,89 +14,88 @@ using SmartCode.TemplateEngine;
 using SmartCode.TemplateEngine.Impl;
 using SmartCode.Utilities;
 
-namespace Bing.CodeGenerator
+namespace Bing.CodeGenerator;
+
+public class OfficialRazorTemplateEngine : ITemplateEngine
 {
-    public class OfficialRazorTemplateEngine : ITemplateEngine
+    private const string TEMP = ".temp";
+    public bool Initialized { get; private set; }
+    public string Name { get; private set; } = "RazorTest";
+    private string _root = AppPath.Relative("RazorTemplates");
+    private string _temp;
+    private IServiceScopeFactory _scopeFactory;
+    public void Initialize(IDictionary<string, object> parameters)
     {
-        private const string TEMP = ".temp";
-        public bool Initialized { get; private set; }
-        public string Name { get; private set; } = "RazorTest";
-        private string _root = AppPath.Relative("RazorTemplates");
-        private string _temp;
-        private IServiceScopeFactory _scopeFactory;
-        public void Initialize(IDictionary<string, object> parameters)
+        Initialized = true;
+        if (parameters != null)
         {
-            Initialized = true;
-            if (parameters != null)
+            if (DictionaryExtensions.Value(parameters, "Name", out string name))
             {
-                if (DictionaryExtensions.Value(parameters, "Name", out string name))
-                {
-                    Name = name;
-                }
-                if (DictionaryExtensions.Value(parameters, "Root", out string root))
-                {
-                    _root = root;
-                }
+                Name = name;
             }
-            _temp = Path.Combine(_root, TEMP);
-            if (!Directory.Exists(_temp))
+            if (DictionaryExtensions.Value(parameters, "Root", out string root))
             {
-                Directory.CreateDirectory(_temp);
+                _root = root;
             }
-            InitializeServices();
         }
+        _temp = Path.Combine(_root, TEMP);
+        if (!Directory.Exists(_temp))
+        {
+            Directory.CreateDirectory(_temp);
+        }
+        InitializeServices();
+    }
 
-        public async Task<string> Render(BuildContext context)
+    public async Task<string> Render(BuildContext context)
+    {
+        using (var serviceScope = _scopeFactory.CreateScope())
         {
-            using (var serviceScope = _scopeFactory.CreateScope())
+            var helper = serviceScope.ServiceProvider.GetRequiredService<OfficialRazorViewToStringRenderer>();
+            var viewPath = context.Build.TemplateEngine.FullPath;
+            if (Path.IsPathRooted(viewPath))
             {
-                var helper = serviceScope.ServiceProvider.GetRequiredService<OfficialRazorViewToStringRenderer>();
-                var viewPath = context.Build.TemplateEngine.FullPath;
-                if (Path.IsPathRooted(viewPath))
-                {
-                    var tempFileName = $"{Path.GetFileNameWithoutExtension(viewPath)}-{Guid.NewGuid():N}{Path.GetExtension(viewPath)}";
-                    var destFileName = Path.Combine(_temp, tempFileName);
-                    File.Copy(context.Build.TemplateEngine.FullPath, destFileName);
-                    viewPath = Path.Combine(TEMP, tempFileName);
-                    var result = await helper.RenderViewToStringAsync(viewPath, context);
-                    File.Delete(destFileName);
-                    return result;
-                }
-                else
-                {
-                    return await helper.RenderViewToStringAsync(viewPath, context);
-                }
+                var tempFileName = $"{Path.GetFileNameWithoutExtension(viewPath)}-{Guid.NewGuid():N}{Path.GetExtension(viewPath)}";
+                var destFileName = Path.Combine(_temp, tempFileName);
+                File.Copy(context.Build.TemplateEngine.FullPath, destFileName);
+                viewPath = Path.Combine(TEMP, tempFileName);
+                var result = await helper.RenderViewToStringAsync(viewPath, context);
+                File.Delete(destFileName);
+                return result;
+            }
+            else
+            {
+                return await helper.RenderViewToStringAsync(viewPath, context);
             }
         }
+    }
 
-        private void InitializeServices()
+    private void InitializeServices()
+    {
+        var services = ConfigureDefaultServices();
+        var serviceProvider = services.BuildServiceProvider();
+        _scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
+    }
+    private IServiceCollection ConfigureDefaultServices()
+    {
+        var services = new ServiceCollection();
+        IFileProvider fileProvider = new PhysicalFileProvider(_root, ExclusionFilters.None);
+        services.AddSingleton<IHostingEnvironment>(new HostingEnvironment
         {
-            var services = ConfigureDefaultServices();
-            var serviceProvider = services.BuildServiceProvider();
-            _scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-        }
-        private IServiceCollection ConfigureDefaultServices()
+            ApplicationName = Assembly.GetEntryAssembly().GetName().Name,
+            WebRootFileProvider = fileProvider,
+        });
+        services.AddSingleton<HtmlEncoder>(NullHtmlEncoder.Default);
+        services.Configure<RazorViewEngineOptions>(options =>
         {
-            var services = new ServiceCollection();
-            IFileProvider fileProvider = new PhysicalFileProvider(_root, ExclusionFilters.None);
-            services.AddSingleton<IHostingEnvironment>(new HostingEnvironment
-            {
-                ApplicationName = Assembly.GetEntryAssembly().GetName().Name,
-                WebRootFileProvider = fileProvider,
-            });
-            services.AddSingleton<HtmlEncoder>(NullHtmlEncoder.Default);
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.FileProviders.Clear();
-                options.FileProviders.Add(fileProvider);
-            });
-            var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
-            services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
-            services.AddSingleton<DiagnosticSource>(diagnosticSource);
-            services.AddLogging();
-            services.AddMvc();
-            services.AddTransient<OfficialRazorViewToStringRenderer>();
-            return services;
-        }
+            options.FileProviders.Clear();
+            options.FileProviders.Add(fileProvider);
+        });
+        var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+        services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
+        services.AddSingleton<DiagnosticSource>(diagnosticSource);
+        services.AddLogging();
+        services.AddMvc();
+        services.AddTransient<OfficialRazorViewToStringRenderer>();
+        return services;
     }
 }
