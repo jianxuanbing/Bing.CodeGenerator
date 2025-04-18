@@ -76,6 +76,24 @@ public class Program
             return;
         System.Console.WriteLine(new string('=', 58));
 
+        // 获取代码生成配置
+        var codeGenItem = options[slnName];
+        var configFileName = slnTypeKv.Key switch
+        {
+            1 => $"{target}SlnGenerateConfig.yml",
+            2 => $"{target}CodeGenerateConfig.yml",
+            _ => ""
+        };
+
+        // 显示配置信息并确认
+        ConsoleHelper.DisplayConfigurationInfo(target, slnName, slnTypeKv.Value, codeGenItem, configFileName, target, outputPath);
+        if (!Prompt.Confirm("确认以上配置并继续生成代码?", true))
+        {
+            System.Console.WriteLine("已取消代码生成操作！");
+            System.Console.ReadLine();
+            return;
+        }
+
         // 生成代码
         var app = GetSmartCodeApp(slnTypeKv.Key, slnName, options[slnName], target, outputPath);
         if (app == null)
@@ -256,7 +274,7 @@ public class Program
 
         // 设置输出路径
         app.Project.Output.Path = string.IsNullOrWhiteSpace(outputPath)
-            ? item.OutputPath
+            ? Path.Combine(item.OutputPath, targetFramework)
             : Path.Combine(outputPath, $"generate_{slnName}");
 
         app.Project.Parameters["UnitOfWork"] = item.UnitOfWorkName;
