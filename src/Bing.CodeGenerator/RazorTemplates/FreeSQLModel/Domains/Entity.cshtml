@@ -20,7 +20,7 @@ namespace @($"{project.Module}.Domain.Models.{schema.Name}")
     /// <summary>
     /// @entity.Description
     /// </summary>
-    [Display(Name = "@entity.Description")]
+    [Display(Name = "@entity.Description", Description = "@entity.Description")]
     [Table(Name = "`@entity.FullName`")]
     public partial class @entity.ClassName@(string.IsNullOrWhiteSpace(entity.GetInterfaces()) ? string.Empty : $": {entity.GetInterfaces().TrimStart(',').Trim()}")
     {

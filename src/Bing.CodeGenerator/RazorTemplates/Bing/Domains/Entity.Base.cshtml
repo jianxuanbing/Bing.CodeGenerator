@@ -19,7 +19,7 @@ namespace @(Model.GetDomainName("Models"))
     /// <summary>
     /// @entity.Description
     /// </summary>
-    [Display(Name = "@entity.Description")]
+    [Display(Name = "@entity.Description", Description = "@entity.Description")]
     public partial class @table.Name : @entity.GetAggregateRootAndInterfaces()
     {
         /// <summary>

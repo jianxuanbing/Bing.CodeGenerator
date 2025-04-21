@@ -20,7 +20,7 @@ namespace @(Model.GetDomainName("Models"))
     /// <summary>
     /// @entity.Description
     /// </summary>
-    [Display(Name = "@entity.Description")]
+    [Display(Name = "@entity.Description", Description = "@entity.Description")]
     public partial class @table.Name : @entity.GetAggregateRootAndInterfaces()
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace @(Model.GetDomainName("Models"))
         /// <summary>
         /// @property.Description
         ///</summary>
-        [Display(Name = "@property.Description")]
+        [Display(Name = "@property.Description", Description = "@property.Description")]
     @if (property.HasValidate())
     {
         @:@property.Validate()
